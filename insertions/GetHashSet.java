@@ -1,5 +1,3 @@
-package populatingDatabase;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.io.BufferedReader;
@@ -19,7 +17,7 @@ public class GetHashSet {
 	static Set<Long> actors = new HashSet<>();
 	static Set<Long> directors = new HashSet<>();
 	
-	static final String Build_Path = "/Users/yilunfu/Desktop/ProjectData/TMDB/TMDBMovieInfo.json";
+	static final String Build_Path = "/Users/QingxiaoDong/Dropbox/2015CIS550/project/ProjectData/TMDB/TMDBMovieInfo";
 	
 	public static void main(String... args) throws IOException, ParseException {
 		JSONParser parser = new JSONParser();

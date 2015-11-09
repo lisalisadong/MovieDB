@@ -1,4 +1,3 @@
-package populatingDatabase;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,9 +16,9 @@ public class PopulatingDirector {
 	static final String DB_URL = "jdbc:mysql://rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com/RinDataBase";
 	static final String USERNAME = "hanabeast";
 	static final String PASSWORD = "fyl1990617";
-	static final String BUILD_PATH = "/Users/yilunfu/Desktop/ProjectData/TMDB/TMDBPersonInfo.json";
+	static final String BUILD_PATH = "/Users/QingxiaoDong/Dropbox/2015CIS550/project/ProjectData/TMDB/TMDBPersonInfo";
 		
-	public static void populatingDirector(String[] args) throws SQLException,
+	public static void main(String[] args) throws SQLException,
 	ClassNotFoundException, IOException, ParseException {
 		GetHashSet.main(args);
 		Connection conn = null;
@@ -35,7 +34,7 @@ public class PopulatingDirector {
 		String line;
 		StringBuilder sql = new StringBuilder();
 		stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-		stmt.executeUpdate("TRUNCATE director");
+		stmt.executeUpdate("TRUNCATE ****");
 		stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
 		while ((line = br.readLine()) != null) {
 			sql = new StringBuilder();

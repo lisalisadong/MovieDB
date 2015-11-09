@@ -7,11 +7,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class SQLMovieInsertion {
+public class SQLDirectsInsertion {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com/RinDataBase";
@@ -32,53 +33,36 @@ public class SQLMovieInsertion {
 		BufferedReader br = new BufferedReader(new FileReader(BUSINESS_PATH));
 		String line;
 		StringBuilder sql = new StringBuilder();
+		// stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+		// stmt.executeUpdate("TRUNCATE ****");
+		// stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
 		while ((line = br.readLine()) != null) {
 
 		 	try {
 		 		JSONObject jsonObject = (JSONObject) parser.parse(line);
 			 	sql = new StringBuilder();
-				sql.append("INSERT INTO movie VALUES (");
-			 	long movie_id = (long) jsonObject.get("id");
-		 		sql.append(movie_id + ",");
-		 		
-		 		String name = (String) jsonObject.get("title");
-		 		if (name == null || name.length() > 300)
-		 			continue;
-		 		sql.append("'" + name.trim().replace("'", "\\'") + "',");
-		 		
-		 		String releaseDate= (String) jsonObject.get("releasedate");
-		 		if (releaseDate == null || releaseDate.equals(""))
-		 			sql.append("NULL" + ",");
-		 		else {
-		 			sql.append("'" + releaseDate + "',");
+				sql.append("INSERT INTO directs VALUES (");
+				long movie_id = (long) jsonObject.get("id");
+				JSONArray castJsonObject = (JSONArray) jsonObject.get("crew");
+				for (int i = 0; i < castJsonObject.size(); i++) {
+					JSONObject jo = (JSONObject) castJsonObject.get(i);
+					if (((String) jo.get("department")).equals("Directing")) {
+						try {
+							long director_id = (long) jo.get("personId");
+							sql.append(director_id + ",");
+							sql.append("" + movie_id + ")");
+							// System.out.println(sql);
+							stmt.executeUpdate(sql.toString());
+						} catch (Exception e) {
+							System.err.println(sql.toString());
+					 		System.out.println(e);
+						}
+						
+						sql = new StringBuilder();
+						sql.append("INSERT INTO directs VALUES (");
+					}
 				}
-		 		
-		 		if (jsonObject.get("runtime") instanceof String) {
-		 			sql.append("NULL" + ",");
-		 		} else {
-		 			long duration = (long) jsonObject.get("runtime");
-		 			sql.append("" + duration + ",");
-		 		}
-		 		
-		 		String poster = (String) jsonObject.get("poster");
-		 		if (poster == null)
-		 			sql.append("NULL" + ",");
-		 		else {
-		 			sql.append("'" + poster + "',");
-		 		}
-		 		
-		 		String overview = (String) jsonObject.get("overview");
-		 		if (overview == null || overview.trim().length() == 0)
-		 			sql.append("NULL" + "");
-		 		else {
-		 			sql.append("'" + overview.trim().replace("'", "\\'") + "'");
-		 		}
-
-		 		sql.append(")");
-		 		// System.out.println(sql.toString());
-		 		stmt.executeUpdate(sql.toString());
 		 	} catch (Exception e) {
-		 		System.err.println(sql.toString());
 		 		System.out.println(e);
 		 	}
 		 	// break;
