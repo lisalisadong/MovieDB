@@ -1,6 +1,6 @@
 -- ACTOR (id:int, name:string, dateOfBirth:date, picture:string)
 create table actor(
-	id int, 
+	id bigint, 
     name varchar(50) not null, 
 	dateOfBirth date, 
     picture varchar(100),

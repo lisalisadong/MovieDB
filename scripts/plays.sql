@@ -1,6 +1,6 @@
 -- Plays (actor_id:ind, movie_id:int, role: string
 create table plays(
-    actor_id int,
+    actor_id bigint,
     movie_id int,
     role varchar(50),
     primary key (actor_id, movie_id, role),
