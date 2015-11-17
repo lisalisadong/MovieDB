@@ -6,12 +6,12 @@ router.get('/', function(req, res, next) {
 	res.render('homepage');
 });
 
-router.get('/references', function(req, res, next) {
-	res.render('references');
+router.get('/register', function(req, res, next) {
+	res.render('register');
 });
 
-router.get('/sample', function(req, res, next) {
-	res.render('sample', {results: null});
+router.get('/search', function(req, res, next) {
+	res.render('search', {results: null});
 });
 
 router.get('/work', function(req, res, next) {
