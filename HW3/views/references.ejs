@@ -6,26 +6,45 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="/">CIS450/550</a>
-	    </div>
+      		<a class="navbar-brand" href="/">
+        	<img style="max-width:35px; margin-top: -7px;" alt="Brand" src="https://cdn0.iconfinder.com/data/icons/flowers-4/154/rose-flower-512.png">
+      		</a>
+    	</div>
 	    <div>
 	      <ul class="nav navbar-nav">
-	        <li><a href="/">Home</a></li>
-	        <li><a href="/sample">Sample Work</a></li>
-	        <li><a href="/work">Your Work</a></li> 
-	        <li class="active"><a href="/references">References</a></li> 
+
+	        <li class="active"><a href="/references">Register</a></li> 
 	      </ul>
 	    </div>
 	  </div>
 	</nav>
-    <div class="heading">
-    	<a href="http://www.tutorialspoint.com/nodejs/"><p>A good tutorial for NodeJS</p></a>
-    	<a href="http://docs.mongodb.org/getting-started/node/client/"><p>MongoDB for NodeJS</p></a>
-    	<a href="https://scotch.io/tutorials/use-ejs-to-template-your-node-application#passing-data-to-views"><p>EJS Templating and passing data to views</p></a>
-    	<a href="http://getbootstrap.com/"><p>Bootstrap templates</p></a>
-    </div>
+    <form>
+	  	<div class="form-group">
+	    	<label for="registerEmail1">Email address</label>
+	    	<input type="email" class="form-control" id="registerEmail1" placeholder="Email">
+	  	</div>
+	  	<div class="form-group">
+		    <label for="registerPassword">Password</label>
+		    <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+	  	</div>
+	  	<div class="form-group">
+		    <label for="registerUsername">Username</label>
+		    <input type="password" class="form-control" id="registerUsername" placeholder="Username">
+	  	</div>
+	  	<div class="form-group">
+			<label for="registerAvatar">Select Avatar Image</label>
+			<input type="file" id="registerAvatar">
+			<!-- <p class="help-block">Example block-level help text here.</p> -->
+		</div>
+	  	<div class="checkbox">
+	    	<label>
+	      		<input type="checkbox"> I agree to ....
+	    	</label>
+	  	</div>
+	  	<button type="submit" class="btn btn-default">Register</button>
+	</form>
   </body>
 </html>
