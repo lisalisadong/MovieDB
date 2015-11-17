@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CIS 450/550 Homework3</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">CIS450/550</a>
+	    </div>
+	    <div>
+	      <ul class="nav navbar-nav">
+	        <li><a href="/">Home</a></li>
+	        <li><a href="/sample">Sample Work</a></li>
+	        <li class="active"><a href="/work">Your Work</a></li> 
+	        <li><a href="/references">References</a></li> 
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<div>
+		<% if (results == null) { %>
+			<div class = "row">
+				<form action="/getOpenBusiness" method="get" >
+					<div class="col-md-4">
+					    <select class="form-control" data-style="btn-info" id="day" name="selectpicker">
+							<optgroup label="Select Table">
+					            <option value="0">Select day of the week</option>
+					            <option value="Monday">Monday</option>
+					            <option value="Tuesday">Tuesday</option>
+					            <option value="Wednesday">Wednesday</option>
+					            <option value="Thursday">Thursday</option>
+					            <option value="Friday">Friday</option>
+					            <option value="Saturday">Saturday</option>
+					            <option value="Sunday">Sunday</option>
+				        	</optgroup>		        
+					    </select>
+				    </div>
+				    <div class="col-md-4">
+					    <select class="form-control" data-style="btn-info" id="hour" name="selectpicker">
+							<optgroup label="Select Table">
+					            <option value="">Select hour of the day</option>
+					            <option value="0">00:00-01:00</option>
+					            <option value="1">01:00-02:00</option>
+					            <option value="2">02:00-03:00</option>
+					            <option value="3">03:00-04:00</option>
+					            <option value="4">04:00-05:00</option>
+					            <option value="5">05:00-06:00</option>
+					            <option value="6">06:00-07:00</option>
+					            <option value="7">07:00-08:00</option>
+					            <option value="8">08:00-09:00</option>
+					            <option value="9">09:00-10:00</option>
+					            <option value="10">10:00-11:00</option>
+					            <option value="11">11:00-12:00</option>
+					            <option value="12">12:00-13:00</option>
+					            <option value="13">13:00-14:00</option>
+					            <option value="14">14:00-15:00</option>
+					            <option value="15">15:00-16:00</option>
+					            <option value="16">16:00-17:00</option>
+					            <option value="17">17:00-18:00</option>
+					            <option value="18">18:00-19:00</option>
+					            <option value="19">19:00-20:00</option>
+					            <option value="20">20:00-21:00</option>
+					            <option value="21">21:00-22:00</option>
+					            <option value="22">22:00-23:00</option>
+					            <option value="23">23:00-00:00</option>
+				        	</optgroup>		        
+					    </select>
+				    </div>
+				 	<div class="col-md-4">
+				    	<input disabled id="submit" type="submit" class="btn btn-warning"/>
+					</div>
+				</form>
+			</div>
+		<% } 
+           else { %>
+           		<div class = "heading">
+				<% for(var i=0; i<results.length; i++) { %>
+					<p><%= results[i] %></p>
+				<% } %>
+				</div>
+		<% } %>	
+	</div>
+	<script type="text/javascript" src='/scripts/work.js'></script>
+  </body>
+</html>
