@@ -24,8 +24,8 @@ router.get('/search', function(req, res, next) {
 	res.render('search', {results: null});
 });
 
-router.get('/work', function(req, res, next) {
-	res.render('work', {results: null});
+router.get('/profile', function(req, res, next) {
+	res.render('profile', {results: null});
 });
 
 
