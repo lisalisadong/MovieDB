@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var sample = require('./routes/sampleRoute');
 var work = require('./routes/workRoute');
+var search = require('./routes/search');
 
 var app = express();
 
@@ -30,7 +31,7 @@ app.use('/', routes);
 // if you get a request for the sampleResponse page, call the 'displayResponse' function present in the 'sampleRoute' route
 app.get('/sampleResponse', sample.displayResponse);
 
-app.get('/getOpenBusiness', work.displayResponse);
+app.get('/getMovie', search.displayResponse);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
