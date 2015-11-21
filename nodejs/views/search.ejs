@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CIS 450/550 Homework3</title>
+    <title>Rin Movie</title>
     <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
@@ -15,7 +15,28 @@
     	</div>
 	    <div>
 	      <ul class="nav navbar-nav">
+	      	<li><a href="/">Home</a></li>
 	        <li class="active"><a href="/search">Search</a></li>
+	        <li><a href="/profile">My Profile</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	      	<form class="navbar-form navbar-left" role="sign-in">
+				<div class="form-group">
+					<label class="sr-only" for="exampleInputEmail3">Email address</label>
+					<input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+				</div>
+				  	<div class="form-group">
+				    <label class="sr-only" for="exampleInputPassword3">Password</label>
+				    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+				</div>
+				<div class="checkbox">
+				    <label>
+				      <input type="checkbox"> Remember me
+				    </label>
+				</div>
+	        	<button type="submit" class="btn btn-link">Sign In</button>
+	      	</form>
+	        <li><a href="/register">Sign Up</a></li>
 	      </ul>
 	    </div>
 	  </div>
@@ -24,8 +45,7 @@
 	  	<div class="featurette">
 	   	<div class="featurette-inner">
 	      	<form role="form" class="search">
-	         	<h3 class="no-margin-top h1">Search Me.</h3>
-	         	<div class="input-group input-group-lg col-md-10 col-sm-offset-2 text-center">
+	         	<div class="input-group input-group-lg col-md-9 col-sm-offset-2 text-center">
 		            <input type="search" placeholder="Movie, Actor, Director, User..." class="form-control">
 		            <span class="input-group-btn text-left">
 		            	<button class="btn btn-danger" type="button">Search</button>
