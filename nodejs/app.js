@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var sample = require('./routes/sampleRoute');
 var work = require('./routes/workRoute');
+var search = require('./routes/search');
 var register = require('./routes/register');
 
 var app = express();
@@ -31,7 +32,7 @@ app.use('/', routes);
 // if you get a request for the sampleResponse page, call the 'displayResponse' function present in the 'sampleRoute' route
 app.get('/sampleResponse', sample.displayResponse);
 
-app.get('/getOpenBusiness', work.displayResponse);
+app.get('/getMovie', search.displayResponse);
 
 app.get('/registerResponse', register.displayResponse);
 
