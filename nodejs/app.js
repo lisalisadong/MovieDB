@@ -34,7 +34,7 @@ app.get('/sampleResponse', sample.displayResponse);
 
 app.get('/getMovie', search.displayResponse);
 
-// app.get('/registerResponse', register.displayResponse);
+app.get('/registerResponse', register.displayResponse);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
