@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
 });
 
 
-function getResults(callback, query) {
+function getResults() {
 	connection.query('SELECT * from movie', function(err, rows, fields) {
 		connection.end();
 		if (!err)
@@ -32,15 +32,13 @@ function generateResponse(req, res) {
 			});
 		} else {
 			console.log("Connected correctly to server.");
-			getResults(db, function(results) {
-				res.render('search.ejs', {results: results});
-			}, query);
+			getResults();
 		}
 	});
 }
 
 exports.displayResponse = function(req, res){
+	console.log("xxx");
 	generateResponse(req, res);
-	connection.end();
 };
 

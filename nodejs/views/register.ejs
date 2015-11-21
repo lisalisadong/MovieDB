@@ -21,38 +21,31 @@
 	    </div>
 	  </div>
 	</nav>
-<<<<<<< HEAD
-    <form method="get" action="/registerResponse">
+    <form method="get" action="/registerResponse" class = "col-md-3">
 	  	<div class="form-group" name ="id">
-=======
-    <form id="register_form" action="form_action.asp" class = "col-md-3">
-	  	<div class="form-group">
->>>>>>> fbee540b59708cc76dd74ae9d567579cb3aade09
 	    	<label for="registerEmail1">Email address</label>
-	    	<input type="email" class="form-control" id="registerEmail1" placeholder="Email">
+	    	<input pattern=".{5,}" required title="Email address incomplete." type="email" class="form-control" id="registerEmail1" placeholder="Email">
 	  	</div>
 	  	<div class="form-group" name="password">
 		    <label for="registerPassword">Password</label>
-		    <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+		    <input pattern=".{8,}" required title="8 characters minimum." type="password" class="form-control" id="registerPassword" placeholder="Password">
 	  	</div>
-<<<<<<< HEAD
 	  	<div class="form-group" name="username">
-=======
-	  	<div class="form-group" >
->>>>>>> fbee540b59708cc76dd74ae9d567579cb3aade09
 		    <label for="registerUsername">Username</label>
-		    <input type="password" class="form-control" id="registerUsername" placeholder="Username">
+		    <input pattern=".{3,}" required title="3 characters minimum." type="password" class="form-control" id="registerUsername" placeholder="Username">
 	  	</div>
 	  	<div class="form-group" name="avatar">
 			<label for="registerAvatar">Select Avatar Image</label>
 			<input type="file" id="registerAvatar">
 			<!-- <p class="help-block">Example block-level help text here.</p> -->
 		</div>
+		<!--
 	  	<div class="checkbox">
 	    	<label>
 	      		<input type="checkbox"> I agree to ....
 	    	</label>
 	  	</div>
+	  	-->
 	  	<button type="submit" class="btn btn-default">Register</button>
 	</form>
   </bod
