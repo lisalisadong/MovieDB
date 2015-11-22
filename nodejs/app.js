@@ -13,6 +13,7 @@ var sample = require('./routes/sampleRoute');
 var work = require('./routes/workRoute');
 var search = require('./routes/search');
 var register = require('./routes/register');
+var homepage = require('./routes/homepage');
 
 var app = express();
 
@@ -35,6 +36,8 @@ app.get('/sampleResponse', sample.displayResponse);
 app.get('/getMovie', search.displayResponse);
 
 app.get('/registerResponse', register.displayResponse);
+
+app.get('/loginResponse', homepage.displayResponse);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
