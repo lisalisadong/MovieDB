@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/register', function(req, res, next) {
-	res.render('register', {flag:flase});
+	res.render('register', {flag:false});
 });
 
 router.get('/search', function(req, res, next) {
