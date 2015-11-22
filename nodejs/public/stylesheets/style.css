@@ -6,7 +6,7 @@ body {
 
 .heading {
   text-align: center;
-  color: orange;
+  color: #d9534f;
 }
 
 
@@ -32,7 +32,7 @@ body {
 
 h1 {
   padding-top: 2cm;
-  color: orange;
+  color: #d9534f;
   font-size: 300%;
 }
 
