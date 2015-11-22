@@ -10,13 +10,22 @@ var connection = mysql.createConnection({
 });
 
 
-function getResults() {
-	connection.query('SELECT * from movie', function(err, rows, fields) {
+function getResults(callback) {
+	connection.query('select * from movie where releaseDate >= "2015-01-01" and releaseDate < "2015-11-20"', function(err, rows) {
 		connection.end();
-		if (!err)
-		   	console.log('The solution is: ', rows);
-		else
+		if (!err) {
+		   	// console.log('The solution is: ', rows);
+			var results = [];
+			if (rows != null) {
+				//console.log(doc);
+				for (var i = 0; i < rows.length; i++) {
+					results.push(rows[i]);
+				}
+				callback(results);
+			}
+		} else {
 			console.log('Error while performing Query.');
+		}
 	});
 }
 
@@ -32,7 +41,9 @@ function generateResponse(req, res) {
 			});
 		} else {
 			console.log("Connected correctly to server.");
-			getResults();
+			getResults(function(results) {
+				res.render("search", {results:results})
+			})
 		}
 	});
 }
