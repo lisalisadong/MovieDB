@@ -105,14 +105,17 @@
 				
 				<a href="#" onclick="" class=""><h3><%= results[i].name %></h3></a>
 				<% var date = results[i].releaseDate %>
-				<p><%= date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-				(date.getDay() + 1) + " | " + results[i].duration + " min "%></p>
+				<% if (date != null) { %>
+					<p><%= date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
+					date.getDate() + " | " + results[i].duration + " min " + " | " +
+					results[i].genre%></p>
+				<%}%>
 				<% if(results[i].overview != null) {%>
 					<% var dots = "" %>
-					<% if(results[i].overview.length > 500) {%>
+					<% if(results[i].overview.length > 700) {%>
 						<% dots="...";%>
 					<% } %>
-					<p><%= results[i].overview.substring(0, 500) + dots %></p>
+					<p><%= results[i].overview.substring(0, 700) + dots %></p>
 				<%}%>
 			</div>
 
@@ -125,14 +128,14 @@
 				<% var date = results[i].dateOfBirth %>
 				<% if (date != null) { %>
 					<p><%= 'Date of Birth:' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-					(date.getDay() + 1)%></p>
+					date.getDate()%></p>
 				<%}%>	
 				<% if(results[i].bio != null) {%>
 					<% var dots = "" %>
-					<% if(results[i].bio.length > 500) {%>
+					<% if(results[i].bio.length > 700) {%>
 						<% dots="...";%>
 					<% } %>
-					<p><%= results[i].bio.substring(0, 500) + dots %></p>
+					<p><%= results[i].bio.substring(0, 700) + dots %></p>
 				<%}%>
 			</div>
 			<%} else {%>
@@ -144,7 +147,7 @@
 				<% var date = results[i].dateCreated %>
 				<% if (date != null) { %>
 					<p><%= 'Date Created: ' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-					(date.getDay() + 1)%></p>
+					date.getDate()%></p>
 				<%}%>
 			</div>
 			<%}%>

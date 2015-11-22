@@ -6,6 +6,7 @@ body {
 
 .heading {
   text-align: center;
+  color: orange;
 }
 
 
@@ -30,9 +31,15 @@ body {
 }
 
 h1 {
-  padding-top: 3cm;
-  color: black;
-  font-size: 500%;
+  padding-top: 2cm;
+  color: orange;
+  font-size: 300%;
+}
+
+h4 {
+  padding-top: 15mm;
+  color: gray;
+  font-size: 100%;
 }
 
 p {
