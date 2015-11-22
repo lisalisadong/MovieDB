@@ -66,18 +66,18 @@
 			            </span>
 		         	</div>
 		         	<!-- /input-group -->
-		         	<div class="input-group col-sm-offset-2 text-left text-muted">
-			         	<label class="checkbox-inline">
-		  					<input type="checkbox" id="inlineCheckbox1" value="option1"> Movie
+		         	<div id="searchRadio" class="input-group col-sm-offset-2 text-left text-muted">
+			         	<label class="radio-inline">
+		  					<input type="radio" name="searchOptions" id="radio_movie" value="option1" checked> Movie
 						</label>
-						<label class="checkbox-inline">
-		  					<input type="checkbox" id="inlineCheckbox2" value="option2"> Actor
+						<label class="radio-inline">
+		  					<input type="radio" name="searchOptions" id="radio_actor" value="option2"> Actor
 						</label>
-						<label class="checkbox-inline">
-		  					<input type="checkbox" id="inlineCheckbox3" value="option3"> Director
+						<label class="radio-inline">
+		  					<input type="radio" name="searchOptions" id="radio_director" value="option3"> Director
 						</label>
-						<label class="checkbox-inline">
-		  					<input type="checkbox" id="inlineCheckbox3" value="option3"> User
+						<label class="radio-inline">
+		  					<input type="radio" name="searchOptions" id="radio_user" value="option4"> User
 						</label>
 					</div>
 		      	</form>
@@ -97,11 +97,12 @@
 			</div>
 		</div>
 		<div class="row">
-		
+			<% if (option == 1) { %>
 			<div class="col-md-2 col-sm-offset-2">
 				<img src="<%= results[i].poster %>" width="100%" height="100%">
 			</div>
 			<div class="col-md-4">
+				
 				<a href="#" onclick="" class=""><h3><%= results[i].name %></h3></a>
 				<% var date = results[i].releaseDate %>
 				<p><%= date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
@@ -114,6 +115,39 @@
 					<p><%= results[i].overview.substring(0, 500) + dots %></p>
 				<%}%>
 			</div>
+
+			<%} else if(option == 2 || option == 3) {%>
+			<div class="col-md-2 col-sm-offset-2">
+				<img src="<%= results[i].picture %>" width="100%" height="100%">
+			</div>
+			<div class="col-md-4">
+				<a href="#" onclick="" class=""><h3><%= results[i].name %></h3></a>
+				<% var date = results[i].dateOfBirth %>
+				<% if (date != null) { %>
+					<p><%= 'Date of Birth:' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
+					date.getDay()%></p>
+				<%}%>	
+				<% if(results[i].bio != null) {%>
+					<% var dots = "" %>
+					<% if(results[i].bio.length > 500) {%>
+						<% dots="...";%>
+					<% } %>
+					<p><%= results[i].bio.substring(0, 500) + dots %></p>
+				<%}%>
+			</div>
+			<%} else {%>
+			<div class="col-md-2 col-sm-offset-2">
+				<img src="<%= results[i].avatar %>" width="100%" height="100%">
+			</div>
+			<div class="col-md-4">
+				<a href="#" onclick="" class=""><h3><%= results[i].username %></h3></a>
+				<% var date = results[i].dateCreated %>
+				<% if (date != null) { %>
+					<p><%= 'Date Created: ' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
+					date.getDay()%></p>
+				<%}%>
+			</div>
+			<%}%>
 		</div>
 		
 		<% } %>

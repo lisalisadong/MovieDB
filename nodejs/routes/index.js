@@ -12,7 +12,7 @@ router.get('/register', function(req, res, next) {
 });
 
 router.get('/search', function(req, res, next) {
-	res.render('search', {results: null});
+	res.render('search', {results: null, option:1});
 });
 
 router.get('/profile', function(req, res, next) {

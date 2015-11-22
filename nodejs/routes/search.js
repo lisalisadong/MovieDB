@@ -12,7 +12,25 @@ var connection = mysql.createConnection({
 
 function getResults(req, callback) {
 	var input = req.query.input;
-	var query = "SELECT * FROM movie WHERE LCASE(name) LIKE LCASE('%" + input + "%');";
+	var option = 1;
+	switch (req.query.searchOptions) {
+		case "option1":
+			option = 1;
+			var query = "SELECT * FROM movie WHERE LCASE(name) LIKE LCASE('%" + input + "%');";
+			break;
+		case "option2":
+			option = 2;
+			var query = "SELECT * FROM actor WHERE LCASE(name) LIKE LCASE('%" + input + "%');"
+			break;
+		case "option3":
+			option = 3;
+			var query = "SELECT * FROM director WHERE LCASE(name) LIKE LCASE('%" + input + "%');"
+			break;
+		case "option4":
+			option = 4;
+			var query = "SELECT * FROM user WHERE LCASE(username) LIKE LCASE('%" + input + "%');"
+			break;
+	}
 	connection.query(query, function(err, rows) {
 		if (!err) {
 		   	// console.log('The solution is: ', rows);
@@ -22,7 +40,7 @@ function getResults(req, callback) {
 				for (var i = 0; i < rows.length; i++) {
 					results.push(rows[i]);
 				}
-				callback(results);
+				callback(results, option);
 			}
 		} else {
 			console.log('Error while performing Query.');
@@ -33,8 +51,8 @@ function getResults(req, callback) {
 function generateResponse(req, res) {
 
 	console.log("Connected correctly to server.");
-	getResults(req, function(results) {
-		res.render("search", {results:results})
+	getResults(req, function(results, option) {
+		res.render("search", {results:results, option:option})
 	});
 	
 }
