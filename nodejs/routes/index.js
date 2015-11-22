@@ -1,23 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
-//var moment = require('moment')
-
-var connection = mysql.createConnection({
-    host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
-    user: 'hanabeast',
-    password: 'fyl1990617',
-    database: 'RinDataBase'
-});
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.render('homepage');
+	res.render('homepage', {user:null, invalid:null});
 });
 
 router.get('/register', function(req, res, next) {
-	res.render('register');
+	res.render('register', {flag:false});
 });
 
 router.get('/search', function(req, res, next) {
@@ -28,7 +19,6 @@ router.get('/profile', function(req, res, next) {
 	res.render('profile', {results: null});
 });
 
-
-
-
 module.exports = router;
+
+
