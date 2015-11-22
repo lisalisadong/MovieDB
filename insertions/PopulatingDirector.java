@@ -17,7 +17,7 @@ public class PopulatingDirector {
 	static final String USERNAME = "hanabeast";
 	static final String PASSWORD = "fyl1990617";
 	static final String BUILD_PATH = "/Users/QingxiaoDong/Dropbox/2015CIS550/project/ProjectData/TMDB/TMDBPersonInfo";
-		
+	
 	public static void main(String[] args) throws SQLException,
 	ClassNotFoundException, IOException, ParseException {
 		GetHashSet.main(args);
@@ -33,9 +33,9 @@ public class PopulatingDirector {
 		BufferedReader br = new BufferedReader(new FileReader(BUILD_PATH));
 		String line;
 		StringBuilder sql = new StringBuilder();
-		stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-		stmt.executeUpdate("TRUNCATE ****");
-		stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+//		stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+//		stmt.executeUpdate("TRUNCATE ***");
+//		stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
 		while ((line = br.readLine()) != null) {
 			sql = new StringBuilder();
 			JSONObject object = (JSONObject) parser.parse(line);
@@ -60,8 +60,8 @@ public class PopulatingDirector {
 				sql.append("'" + dateOfBirth+ "'," );
 			}
 			
-			String picture = (String) object.get("proflie");
-			if (picture == null || picture.length() > 100 || picture.length() == 0) {
+			String picture = (String) object.get("profile");
+			if (picture == null || picture.length() == 0) {
 				sql.append("Null,");
 			} else {
 				sql.append("'" + picture.trim().replace("'", "\\'") + "'," );
@@ -75,6 +75,7 @@ public class PopulatingDirector {
 			}
 			sql.append(")");
 			stmt.executeUpdate(new String(sql));
+			//System.out.println(sql);
 		}
 		System.out.println("import done");
 		
