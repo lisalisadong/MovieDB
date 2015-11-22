@@ -6,8 +6,13 @@
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
+var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var LocalStrategy   = require('passport-local').Strategy;
+var facebookStrategy = require('passport-local').Strategy;
+var Bing = require('node-bing-api')({accKey:"qEJU0DWZxBhbw40arbtAyoSh1prT+/A0vEa8jTs4TJU"});
+
 var routes = require('./routes/index');
 var sample = require('./routes/sampleRoute');
 var work = require('./routes/workRoute');
@@ -15,9 +20,11 @@ var search = require('./routes/search');
 var register = require('./routes/register');
 var homepage = require('./routes/homepage');
 
+
+
 var app = express();
 
-console.log('CIS450/550 Homework3');
+console.log('Rindabase');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +52,10 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+//handle login
+app.post('/login', passport.authenticate('local', { successRedirect: '/',
+    failureRedirect: '/login' }));
 
 // error handlers
 

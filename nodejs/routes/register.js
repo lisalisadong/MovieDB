@@ -30,7 +30,7 @@ function generateUser(req, res) {
 					console.log("Insertion Failure");
 				} else {
 					console.log('registering');
-					res.render('homepage', {user: result[0].username});
+					res.render('homepage', {user:username});
 				}
 			});
 		} else {
