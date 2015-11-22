@@ -55,10 +55,10 @@
 	    </div>
 	  </div>
 	</nav>
-    <form class="form-inline">
+    <form class="form-inline" method="get" action="/getMovie">
 	  	<div class="featurette">
 		   	<div class="featurette-inner">
-		      	<form role="form" class="search" method="get" action="/getMovie">
+		      	<form role="form" class="search">
 		         	<div class="input-group input-group-lg col-md-9 col-sm-offset-2 text-center">
 			            <input type="search" placeholder="Movie, Actor, Director, User..." class="form-control">
 			            <span class="input-group-btn text-left">
@@ -88,5 +88,30 @@
 
 		</div>
 	</form>
+	<% if (results != null) { %>
+        <div>
+
+			<% for(var i=0; i<results.length; i++) { %>
+				<p class="ul first"></p>
+				<table width="100%" class>
+					<tbody>
+						<tr class="item">
+							<td width="100" valign="top">
+								<a class="nbg" href="#">
+									<img src="<%= results[i].poster %>">
+								</a>
+							</td>
+							<td valign="top">
+								<div class="pl2">
+									<a href="#" onclick="" class=""><%= results[i].name %></a>
+									<p class="pl"><%= results[i].overview %></p>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				<!--<p><%= results[i].name %></p>-->
+			<% } %>
+		</div>
+	<% } %>	
   </body>
 </html>

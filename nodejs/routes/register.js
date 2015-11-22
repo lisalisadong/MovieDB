@@ -30,7 +30,7 @@ function generateUser(req, res) {
 					console.error();
 				} else {
 					console.log('registering');
-					res.render('homepage.ejs', {user: });
+					res.render('homepage.ejs');
 				}
 			});
 		}
