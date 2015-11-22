@@ -45,7 +45,7 @@
 	      <ul class="nav navbar-nav">
 	        <li class="active"><a href="/">Home</a></li>
 	  		<li><a href="/search">Search</a></li>
-	  		<% if (false) { %>
+	  		<% if (user != null) { %>
 	  			<li><a href="/profile">My Profile</a></li>
 	  		<% } %>
 	      </ul>
@@ -56,7 +56,7 @@
 		      	<form class="navbar-form navbar-left" role="sign-in" action="/loginResponse" method="get">
 		      		<% if (invalid == true) {%>
 		      			<div class="form-group">
-		      			<p style="font-size:80%">Invalid email or password</p>
+		      			<label>Invalid email or password</lable>
 		      			</div>
 		      		<%}%>
 					<div class="form-group" >
