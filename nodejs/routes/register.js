@@ -20,19 +20,22 @@ function generateUser(req, res) {
 	console.log(query);
 	connection.query(query, function(err, result) {
 		if(err) {
-			console.log(err.msg);
+			console.log("Selection Failure.");
 		}
 		else if (result.length == 0) {
 			var query_insert = "INSERT INTO user (id, username, password) VALUE ('" +
 			email + "','" + username + "','" + password + "');";
 			connection.query(query_insert, function(err, result) {
 				if (err) {
-					console.error();
+					console.log("Insertion Failure");
 				} else {
 					console.log('registering');
 					res.render('homepage', {user: result[0].username});
 				}
 			});
+		} else {
+			console.log("account areadly exists");
+			res.render('register', {flag:true})
 		}
 	});
 }

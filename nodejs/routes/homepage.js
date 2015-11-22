@@ -18,7 +18,7 @@ function getLoginResult(req, res) {
 	console.log(query);
 	connection.query(query, function(err, result) {
 		if (err) {
-			console.log("error1");
+			console.log("Selection Failure.");
 		}
 		else if (result.length == 0) {
 			res.render("homepage", {user:null, invalid:true});
@@ -27,6 +27,12 @@ function getLoginResult(req, res) {
 		}
 	});
 }
+
+function generateLoginResponse(req, res) {
+	
+}
+
+
 
 exports.displayResponse = function(req, res) {
 	getLoginResult(req, res);
