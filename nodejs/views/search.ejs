@@ -106,7 +106,7 @@
 				<a href="#" onclick="" class=""><h3><%= results[i].name %></h3></a>
 				<% var date = results[i].releaseDate %>
 				<p><%= date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-				date.getDay() + " | " + results[i].duration + " min "%></p>
+				(date.getDay() + 1) + " | " + results[i].duration + " min "%></p>
 				<% if(results[i].overview != null) {%>
 					<% var dots = "" %>
 					<% if(results[i].overview.length > 500) {%>
@@ -125,7 +125,7 @@
 				<% var date = results[i].dateOfBirth %>
 				<% if (date != null) { %>
 					<p><%= 'Date of Birth:' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-					date.getDay()%></p>
+					(date.getDay() + 1)%></p>
 				<%}%>	
 				<% if(results[i].bio != null) {%>
 					<% var dots = "" %>
@@ -144,7 +144,7 @@
 				<% var date = results[i].dateCreated %>
 				<% if (date != null) { %>
 					<p><%= 'Date Created: ' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-					date.getDay()%></p>
+					(date.getDay() + 1)%></p>
 				<%}%>
 			</div>
 			<%}%>
