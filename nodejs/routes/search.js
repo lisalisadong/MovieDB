@@ -10,9 +10,10 @@ var connection = mysql.createConnection({
 });
 
 
-function getResults(callback) {
-	connection.query('select * from movie where releaseDate >= "2015-01-01" and releaseDate < "2015-11-20"', function(err, rows) {
-		connection.end();
+function getResults(req, callback) {
+	var input = req.query.input;
+	var query = "SELECT * FROM movie WHERE LCASE(name) LIKE LCASE('%" + input + "%');";
+	connection.query(query, function(err, rows) {
 		if (!err) {
 		   	// console.log('The solution is: ', rows);
 			var results = [];
@@ -30,26 +31,16 @@ function getResults(callback) {
 }
 
 function generateResponse(req, res) {
-	
-	// connect to mysql
-	connection.connect(function(err) {
-		if(err != null) {
-			console.log("Connection to server failed.");
-			res.render('error', {
-				message: "Connection to server failed.",
-				error: err
-			});
-		} else {
-			console.log("Connected correctly to server.");
-			getResults(function(results) {
-				res.render("search", {results:results})
-			})
-		}
+
+	console.log("Connected correctly to server.");
+	getResults(req, function(results) {
+		res.render("search", {results:results})
 	});
+	
 }
 
 exports.displayResponse = function(req, res){
-	console.log("xxx");
 	generateResponse(req, res);
+	// connection.end();
 };
 
