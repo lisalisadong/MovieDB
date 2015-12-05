@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rin Movie</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+      		<a class="navbar-brand" href="/">
+        	<img style="max-width:35px; margin-top: -7px;" alt="Brand" src="https://cdn0.iconfinder.com/data/icons/flowers-4/154/rose-flower-512.png">
+      		</a>
+    	</div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="/">Home</a></li>
+	  		<li><a href="/search">Search</a></li>
+	  		<% if (user != null) { %>
+	  			<li><a href="/profile">My Profile</a></li>
+	  		<% } %>
+	      </ul>
+	      <!-- search bar -->
+	      
+	      <ul class="nav navbar-nav navbar-right">
+	      	<% if (user == null) { %>
+		      	<form class="navbar-form navbar-left" role="sign-in" action="/login" method="post">
+		      		<% if (invalid == true) {%>
+		      			<div class="form-group">
+		      			<label>Invalid email or password</lable>
+		      			</div>
+		      		<%}%>
+					<div class="form-group" >
+						<label class="sr-only" for="exampleInputEmail3">Email address</label>
+						<input pattern=".{5,}" required title="Email address incomplete." type="email" class="form-control" id="exampleInputEmail3" placeholder="Email" name = "email">
+					</div>
+					  	<div class="form-group" name="password">
+					    <label class="sr-only" for="exampleInputPassword3">Password</label>
+					    <input pattern=".{1,}" required title="Password too short." type="password" class="form-control" id="exampleInputPassword3" placeholder="Password" name = "password">
+					</div>
+					<!--div class="checkbox" name="check">
+					    <label>
+					      <input type="checkbox"> Remember me
+					    </label>
+					</div-->
+		        	<button type="submit" class="btn btn-link">Sign In</button>
+		      	</form>
+		        <li><a href="/signup">Sign Up</a></li>
+		        <li><a href="/auth/facebook">Login with Facebook!</a></li>
+		    <% } else { %>
+		    	<% var name = user.local.username %>
+                <% if (name == undefined) name = user.facebook.name %>
+		    	<li class="dropdown">
+	          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= name %><span class="caret"></span></a>
+	          		<ul class="dropdown-menu">
+			            <li><a href="/profile">My Profile</a></li>
+			            <li><a href="/account">My Account</a></li>
+	            		<li role="separator" class="divider"></li>
+	            		<li><a href="/logout">Log Out</a></li>
+	            	</ul>
+            	</li>
+		    <% } %>	
+
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="container">
+
+	    <div class="heading">
+	        <h1>Account Details</h1>
+	        <p></p>
+	        <p></p>
+	    </div>
+
+	    <div class="row">
+
+	        <!-- LOCAL INFORMATION -->
+	        <div class="col-sm-6">
+	            <div class="well">
+	                <h3><span class="fa fa-user"></span> Local</h3>
+
+	                <% if (user.local.email) { %>
+	                    <p>
+	                        <strong>id</strong>: <%= user._id %><br>
+	                        <strong>email</strong>: <%= user.local.email %><br>
+	                        <strong>password</strong>: <%= user.local.password %>
+	                    </p>
+	                    
+	                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
+	                <% } else { %>
+	                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
+	                <% } %>
+
+	            </div>
+	        </div>
+
+	        <!-- FACEBOOK INFORMATION -->
+	        <div class="col-sm-6">
+	            <div class="well">
+	                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+	                <!-- check if the user has this token (is the user authenticated with this social account) -->
+	                <% if (user.facebook.token) { %>
+	                    <p>
+	                        <strong>id</strong>: <%= user.facebook.id %><br>
+	                        <strong>token</strong>: <%= user.facebook.token %><br>
+	                        <strong>email</strong>: <%= user.facebook.email %><br>
+	                        <strong>name</strong>: <%= user.facebook.name %><br>
+	                    </p>
+
+	                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
+	                <% } else { %>
+	                    <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
+	                <% } %>
+
+	            </div>
+	        </div>
+	    </div>
+	    <div class="row">
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  </body>
+</html>

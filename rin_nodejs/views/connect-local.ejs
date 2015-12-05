@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rin Movie</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+            <img style="max-width:35px; margin-top: -7px;" alt="Brand" src="https://cdn0.iconfinder.com/data/icons/flowers-4/154/rose-flower-512.png">
+            </a>
+        </div>
+        <div>
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="/connect/local">Add Local Account</a></li> 
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+    <div class="col-sm-6 col-sm-offset-3">
+
+        <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+        <% } %>
+
+        <!-- LOGIN FORM -->
+        <form action="/connect/local" method="post">
+            
+            <div class="form-group">
+                <label for="registerEmail1">Email address</label>
+                <input pattern=".{5,}" required title="Email address incomplete." type="email" class="form-control" id="registerEmail1" placeholder="Email" name ="email">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input pattern=".{6,}" required title="6 characters minimum." type="password" class="form-control" id="registerPassword" placeholder="Password" name="password">
+            </div>
+            <div class="form-group">
+                <label for="registerUsername">Username</label>
+                <input pattern=".{3,}" required title="3 characters minimum." type="text" class="form-control" id="registerUsername" placeholder="Username" name="username">
+            </div>
+            <div class="form-group">
+                <label for="registerAvatar">Select Avatar Image</label>
+                <input type="file" id="registerAvatar" name="avatar">
+                <!-- <p class="help-block">Example block-level help text here.</p> -->
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Add Local</button>
+        </form>
+
+        <hr>
+
+    </div>
+    </div>
+  </body>
+</html>
