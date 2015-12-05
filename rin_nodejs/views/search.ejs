@@ -40,6 +40,7 @@
 		        	<button type="submit" class="btn btn-link">Sign In</button>
 		      	</form>
 		        <li><a href="/register">Sign Up</a></li>
+		        <li><a href="/auth/facebook">Login with Facebook!</a></li>
 		    <% } else { %>
 		   		<% var name = user.local.username %>
                 <% if (name == undefined) name = user.facebook.name %>

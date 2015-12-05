@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
+var homepage = require('./homepage');
+
 //var moment = require('moment')
 
 var connection = mysql.createConnection({
@@ -19,6 +21,52 @@ var getDay = function(date) {
     if (day < 10) day = '0' + day;
     return year + '-' + month + '-' + day;
 }
+
+
+
+function getRecommendationForUser(req, res, callback) {
+    var today = getDay(new Date());
+    var p = new Date();
+    p.setMonth(p.getMonth() - 3);
+    var past = getDay(p);
+    var user = req.user.id;
+    var results = [];
+    var recentMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE releaseDate > '"
+     + past + "' AND releaseDate <= '" + today + "' AND movie.genre IN (SELECT genre FROM movie WHERE id IN (SELECT movie_id FROM marks WHERE user_id = '"
+      + user + "')) ORDER BY releaseDate DESC;" 
+    var comingMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE releaseDate > '"
+     + today + "' AND movie.genre IN (SELECT genre FROM movie WHERE id IN (SELECT movie_id FROM marks WHERE user_id = '"
+      + user + "')) ORDER BY releaseDate DESC;"
+    var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id " +
+                "WHERE review.star = 10 AND movie.genre IN (SELECT genre FROM movie WHERE id IN "+
+                "(SELECT movie_id FROM marks WHERE user_id = '" + user + "')) " + "ORDER BY releaseDate DESC;";
+    var queries = [];
+    queries.push(recentMovie);
+    queries.push(comingMovie);
+    queries.push(ratedMovie);
+
+    var results = [];
+    for (var i = 0; i < queries.length; i++) {
+        console.log(queries[i]);
+        connection.query(queries[i], function(err, rows) {
+            if (!err) {
+                var result = [];
+                if (rows != null) {
+                    for (var i = 0; i < rows.length; i++) {
+                        result.push(rows[i]);
+                    }
+                    results.push(result);
+                    if (results.length == queries.length) {
+                        callback(results);
+                    }
+                }
+            } else {
+                console.log('Error while performing Query.');
+            }
+        });
+    }
+    
+};
 
 var query_count = 0;
 
@@ -57,15 +105,31 @@ var getRecommendation = function(callback){
     }
 }
 
+var redirectMovie = function(req, res) {
+    res.writeHead(302, {
+        'Location':'/movie?movie_id=' + 
+    });
+    res.end();
+}
+
+
+
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
 
     // home page
     app.get('/', function(req, res) {
-        getRecommendation(function(results) {
+        if (!req.user) {
+            getRecommendation(function(results) {
             res.render('homepage', {user:req.user, invalid:null, results:results});
-        });
+            });
+        } else {
+            getRecommendationForUser(req, res, function(results) {
+            res.render('homepage', {user:req.user, invalid:null, results:results});
+            });
+        }
+        
     });
 
     // search page

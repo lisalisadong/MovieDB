@@ -29,11 +29,6 @@
 	      <ul class="nav navbar-nav navbar-right">
 	      	<% if (user == null) { %>
 		      	<form class="navbar-form navbar-left" role="sign-in" action="/login" method="post">
-		      		<% if (invalid == true) {%>
-		      			<div class="form-group">
-		      			<label>Invalid email or password</lable>
-		      			</div>
-		      		<%}%>
 					<div class="form-group" >
 						<label class="sr-only" for="exampleInputEmail3">Email address</label>
 						<input pattern=".{5,}" required title="Email address incomplete." type="email" class="form-control" id="exampleInputEmail3" placeholder="Email" name = "email">
@@ -96,7 +91,8 @@
 		    </div>
 		    <% } %>
        	<% } %>
-   	<% } %>
+   	<% } %> 
+
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
