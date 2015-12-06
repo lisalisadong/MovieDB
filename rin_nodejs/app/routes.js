@@ -3,7 +3,6 @@ var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
 var url = require('url');
-var homepage = require('./homepage');
 
 //var moment = require('moment')
 
@@ -108,7 +107,7 @@ var getRecommendation = function(callback){
 
 var redirectMovie = function(req, res) {
     res.writeHead(302, {
-        'Location':'/movie?movie_id=' + 
+        'Location':'/movie?movie_id=' + ''
     });
     res.end();
 }
