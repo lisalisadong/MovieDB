@@ -16,7 +16,7 @@
 	    <div>
 	      <ul class="nav navbar-nav">
 	      	<li><a href="/">Home</a></li>
-	        <li class="active"><a href="/signup">Register</a></li> 
+	        <li class="active"><a href="/signup">Sign Up</a></li> 
 	      </ul>
 	    </div>
 	  </div>
@@ -43,11 +43,16 @@
 			    <label for="registerUsername">Username</label>
 			    <input pattern=".{3,}" required title="3 characters minimum." type="text" class="form-control" id="registerUsername" placeholder="Username" name="username">
 		  	</div>
+
 		  	<div class="form-group">
+			    <label for="registerAvatar">Avatar Image Url (Optional)</label>
+			    <input type="url" class="form-control" id="registerAvatar" placeholder="Avatar" name="avatar">
+		  	</div>
+		  	<!--div class="form-group">
 				<label for="registerAvatar">Select Avatar Image</label>
-				<input type="file" id="registerAvatar" name="avatar">
-				<!-- <p class="help-block">Example block-level help text here.</p> -->
-			</div>
+				<input type="file" id="registerAvatar" name="avatar" accept="image/*">
+
+			</div> -->
 
 
 	        <button type="submit" class="btn btn-warning btn-lg">Signup</button>

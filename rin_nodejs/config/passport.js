@@ -95,12 +95,15 @@ module.exports = function(passport) {
 
                         // create the user
                         var newUser            = new User();
-
+    
                         newUser.local.email    = email;
                         newUser.local.password = newUser.generateHash(password);
                         newUser.local.username = req.body.username;
-
-
+                        if (req.body.avatar != '') {
+                            newUser.local.avatar = req.body.avatar;
+                        } else {
+                            newUser.local.avatar = 'http://www.massinsight.com/wp-content/uploads/2014/06/no-image-generic.png';
+                        }
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
@@ -126,6 +129,9 @@ module.exports = function(passport) {
                         user.local.email = email;
                         user.local.password = user.generateHash(password);
                         user.local.username = req.body.username;
+                        if (req.body.avatar != '') {
+                            user.local.avatar = req.body.avatar;
+                        }
                         
                         user.save(function (err) {
                             if (err)
@@ -153,7 +159,7 @@ module.exports = function(passport) {
         clientSecret    : configAuth.facebookAuth.clientSecret,
         callbackURL     : configAuth.facebookAuth.callbackURL,
         passReqToCallback : true, // allows us to pass in the req from our route (lets us check if a user is logged in or not)
-        profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
+        profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'photos', 'friends']
     },
     function(req, token, refreshToken, profile, done) {
 
@@ -175,6 +181,7 @@ module.exports = function(passport) {
                             user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
                             user.facebook.email = (profile.emails[0].value || '').toLowerCase();
 
+
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
@@ -192,6 +199,9 @@ module.exports = function(passport) {
                         newUser.facebook.token = token;
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
                         newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                        https://graph.facebook.com/{facebookId}/picture?type=normal
+                        newUser.local.avatar = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=720&height=540";
+                        console.log(newUser.local.avatar);
 
                         newUser.save(function(err) {
                             if (err)

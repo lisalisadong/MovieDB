@@ -44,10 +44,14 @@
                 <input pattern=".{3,}" required title="3 characters minimum." type="text" class="form-control" id="registerUsername" placeholder="Username" name="username">
             </div>
             <div class="form-group">
-                <label for="registerAvatar">Select Avatar Image</label>
-                <input type="file" id="registerAvatar" name="avatar">
-                <!-- <p class="help-block">Example block-level help text here.</p> -->
+                <label for="registerAvatar">Avatar Image Url (Optional)</label>
+                <input type="url" class="form-control" id="registerAvatar" placeholder="Avatar" name="avatar">
             </div>
+            <!--div class="form-group">
+                <label for="registerAvatar">Select Avatar Image</label>
+                <input type="file" id="registerAvatar" name="avatar" accept="image/*">
+
+            </div> -->
 
             <button type="submit" class="btn btn-warning btn-lg">Add Local</button>
         </form>

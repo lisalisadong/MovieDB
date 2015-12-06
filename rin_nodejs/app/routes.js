@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
+var url = require('url');
 //var moment = require('moment')
 
 var connection = mysql.createConnection({
@@ -82,8 +83,12 @@ module.exports = function(app, passport) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        //console.log(query);
+        //TODO: do something with query.id to fetch profile owner data
         res.render('profile.ejs', {
-            user : req.user
+            user : req.user, profile_owner : null
         });
     });
 
