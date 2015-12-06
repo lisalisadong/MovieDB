@@ -144,6 +144,34 @@ module.exports = function(app, passport) {
         res.render('index.ejs');
     });
 
+    // movie page
+    app.get('/movie', function(req, res, next) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        //TODO: do something here with query.id to fetch movie detail
+        var movie = {   id:27205, 
+                        name:'Inception', 
+                        duration:148, 
+                        releaseDate:'2010-07-16',
+                        poster: 'http://image.tmdb.org/t/p/original/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg',
+                        overview: 'Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: "inception", the implantation of another person\'s idea into a target\'s subconscious.',
+                        genre: 'Action | Thriller | Science Fiction | Mystery | Adventure',
+                        actors: [   {id:6193, name:'Leonardo DiCaprio'},
+                                    {id:24045, name:'Joseph Gordon-Levitt'},
+                                    {id:27578, name:'Ellen Page'},
+                                    {id:2524, name:'Tom Hardy'},
+                                    {id:3899, name:'Ken Watanabe'}],
+                        director: {id:525, name:'Christopher Nolan'},
+                        rating: 9.2,
+                        rater: 10,
+                        my_rating: {status: true, star: 3, comments: "I like it!"},
+                        comments: [  {id:123, name: 'qingxiao', rating: 4, comments: "Awesome!", time: '2015-12-01 12:00:00', agrees: 10, agreed: false},
+                                    {id:234, name: 'yilun', rating: 5, comments: 'Amazing!', time: '2015-12-02 13:12:32', agrees: 14, agreed: true}]
+                    }
+        console.log(movie);
+        res.render('movie.ejs', {user:req.user, movie:movie});
+    });
+
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
         var url_parts = url.parse(req.url, true);
