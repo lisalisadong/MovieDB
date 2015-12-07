@@ -37,6 +37,7 @@ var connection = mysql.createConnection({
 //     });
 
 var generateMovieReponse = function(req, query, res, movieInfo, actorsInfo, ratingAndRator, myRating, myMark, comments) {
+	console.log(ratingAndRator);
 	var movie = {
 		id: movieInfo.id,
 		name: movieInfo.name,
@@ -55,8 +56,10 @@ var generateMovieReponse = function(req, query, res, movieInfo, actorsInfo, rati
 	};
 	res.render('movie.ejs', {user:req.user, movie:movie});
 }
-var getComments = function(req, query, res, movieInfo, actorsInfo, ratingAndRator, myRating, myMark) {
-	var id = query.id;
+var getComments = function(req, res, movieInfo, actorsInfo, ratingAndRator, myRating, myMark) {
+	var id = req.movie_id;
+	var query = ""
+
 }
 
 var getMyMark = function(req, query, res, movieInfo, actorsInfo, ratingAndRator) {

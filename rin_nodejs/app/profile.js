@@ -17,7 +17,37 @@ var connection = mysql.createConnection({
 var addFriend = function(req, res) {
 	var user = req.user.id;
 
+}
 
+var generateProfileResponse = function(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo, wantedMoviesInfo) {
+	var friendsName = friendsInfo.local.name;
+	if (friendsName == undefined) {
+		friendsName = friendsInfo.facebook.name;
+	}
+	res.render('profile.ejs', {
+		user : req.user,
+		profile_owner : ,
+		friendsInfo : {
+			name: friendsName,
+			avatar: friendsInfo.local.avatar
+		},
+		actorInfo : {
+			name: actorInfo.name,
+			picture: actorInfo.picture
+		},
+		directorInfo : {
+			name: directorInfo.name,
+			picture: directorInfo.picture
+		},
+		watchedMoviesInfo: {
+			name: watchedMoviesInfo.name,
+			poster: watchedMoviesInfo.poster
+		},
+		wantedMoviesInfo: {
+			name:wantedMoviesInfo.name,
+			poster: wantedMoviesInfo.poster
+		}
+	});
 }
 
 var getWantedMovies = function(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo) {
@@ -28,7 +58,7 @@ var getWantedMovies = function(req, res, friendsID, friendsInfo, actorInfo, dire
 		if (err) {
 			console.log("err when getWatchedMovies");
 		} else {
-			getWantedMovies(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo);
+			generateProfileResponse(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo, wantedMoviesInfo);
 		}
 	});
 }
