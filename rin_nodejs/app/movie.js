@@ -35,8 +35,17 @@ var connection = mysql.createConnection({
 //         console.log(movie);
 //         res.render('movie.ejs', {user:req.user, movie:movie});
 //     });
+var getDay = function(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if (month < 10) month = '0' + month;
+    if (day < 10) day = '0' + day;
+    return year + '-' + month + '-' + day;
+}
 
 var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark, comments) {
+	var date = getDay(movieInfo[0].releaseDate);
     var movie = {
         id: movieInfo[0].id,
         name: movieInfo[0].name,
@@ -56,6 +65,7 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
     console.log(movie);
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
+
 var getComments = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark) {
     var id = req.movie_id;
     comments = null;
@@ -115,7 +125,7 @@ var getRatingAndRator = function(req, res, movieInfo, actorsInfo, directorsInfo)
 var getMovieDirectors = function(req, res, movieInfo, actorsInfo) {
     var id = req.movie_id;
     var query = "SELECT director.id, director.name FROM director WHERE director.id IN (SELECT "+
-        "director_id FROM directs WHERE movie_id = '"+ id + "');";
+        "director_id FROM directs WHERE movie_id = '"+ id + "') LIMIT 1;";
     console.log(query);
     connection.query(query, function(err, directorsInfo) {
         if (err) {
@@ -129,7 +139,7 @@ var getMovieDirectors = function(req, res, movieInfo, actorsInfo) {
 var getMovieActors = function(req, res, movieInfo) {
     var id = req.movie_id;
     var query = "SELECT actor.id, actor.name FROM actor WHERE actor.id IN (SELECT "+
-        "actor_id FROM plays WHERE movie_id = '"+ id + "');";
+        "actor_id FROM plays WHERE movie_id = '"+ id + "') LIMIT 10;";
     console.log(query);
     connection.query(query, function(err, actorsInfo) {
         if (err) {

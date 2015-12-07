@@ -27,7 +27,7 @@ var getDay = function(date) {
 function getRecommendationForUser(req, res, callback) {
     var today = getDay(new Date());
     var p = new Date();
-    p.setMonth(p.getMonth() - 3);
+    p.setMonth(p.getMonth() - 12);
     var past = getDay(p);
     var user = req.user.id;
     var results = [];
@@ -73,7 +73,7 @@ var query_count = 0;
 var getRecommendation = function(callback){
     var today = getDay(new Date());
     var p = new Date();
-    p.setMonth(p.getMonth() - 3);
+    p.setMonth(p.getMonth() - 12);
     var past = getDay(p);
     var recentMovie = "SELECT * FROM movie WHERE releaseDate > '" + past + "' AND releaseDate <= '" + today +"' ORDER BY releaseDate DESC;";
     var comingMovie = "SELECT * FROM movie WHERE releaseDate > '" + today +"';";

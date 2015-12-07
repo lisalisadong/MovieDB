@@ -94,7 +94,7 @@
                         <img src="<%= person.recent_movies[i].poster%>" width="100%" height="100%">
                         <p>
                         <a href="#" onclick="" class=""><%=person.recent_movies[i].name%></a>
-                        <%=person.recent_movies[i].releaseDate.substring(0,4)%>
+                        <%=person.recent_movies[i].releaseDate%>
                         </p>
                     </div>
                     <% } %>
@@ -111,7 +111,7 @@
                         <img src="<%= person.top_movies[i].poster%>" width="100%" height="100%">
                         <p>
                         <a href="#" onclick="" class=""><%=person.top_movies[i].name%></a>
-                        <%=person.top_movies[i].releaseDate.substring(0,4)%>
+                        <%=person.top_movies[i].releaseDate%>
                         </p>
                     </div>
                     <% } %>
