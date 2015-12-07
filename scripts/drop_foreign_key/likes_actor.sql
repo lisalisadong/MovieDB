@@ -1,0 +1,2 @@
+ALTER TABLE likes_actor
+DROP FOREIGN KEY likes_actor_ibfk_1
