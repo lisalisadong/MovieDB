@@ -36,6 +36,71 @@ var connection = mysql.createConnection({
 //         res.render('movie.ejs', {user:req.user, movie:movie});
 //     });
 
+var generateMovieReponse = function(req, query, res, movieInfo, actorsInfo, ratingAndRator, myRating, myMark, comments) {
+	var movie = {
+		id: movieInfo.id,
+		name: movieInfo.name,
+		duration: movieInfo.duration,
+		releaseDate: movieInfo.releaseDate,
+		poster: movieInfo.poster,
+		overview: movieInfo.overview,
+		genre: movieInfo.genre,
+		actors: actorsInfo,
+		director: directorsInfo,
+		rating: ratingAndRator.rating,
+		raters: ratingAndRator.raters,
+		my_rating:null,
+		comments:null
+
+	};
+	res.render('movie.ejs', {user:req.user, movie:movie});
+}
+var getComments = function(req, query, res, movieInfo, actorsInfo, ratingAndRator, myRating, myMark) {
+	var id = query.id;
+}
+
+var getMyMark = function(req, query, res, movieInfo, actorsInfo, ratingAndRator) {
+	var id = query.id;
+	var user = req.user.id;
+	var query = "SELECT status FROM marks WHERE user_id = '"+user+"' AND movie_id = '"+
+	id+"';";
+	connection.query(query, function(err, myMark) {
+		if (err) {
+			console.log('err when getMyMark');
+		} else {
+			getComments(req, query, res, movieInfo, actorsInfo, ratingAndRator, myRating, myMark);
+		}
+	});
+}
+
+var getMyRating = function(req, query, res, movieInfo, actorsInfo, ratingAndRator) {
+	var id = query.id;
+	var user = req.user.id;
+	var query = "SELECT star, comment FROM review WHERE movie_id = '" + id + "' AND user_id = '"
+	+ user + "';";
+	connection.query(query, function(err, myRating) {
+		if (err) {
+			console.log('err when getMyRating');
+		} else {
+			getMyMark(req, query, res, movieInfo, actorsInfo, ratingAndRator, myRating);
+		}
+	});
+};
+
+var getRatingAndRator = function(req, query, res, movieInfo, actorsInfo) {
+	var id = query.id;
+	var query = "SELECT AVG(star) AS rating, COUNT(star) AS raters FROM review WHERE "+
+	"movie_id = '" + id + "';";
+	connection.query(query, function(err, ratingAndRator) {
+		if (err) {
+			console.log('err when getRatingAndRator');
+		} else {
+			getMyRating(req, query, res, movieInfo, actorsInfo, ratingAndRator);
+		}
+	});
+};
+
+
 var getMovieDirectors = function(req, query, res, movieInfo, actorsInfo) {
 	var id = query.id;
 	var query = "SELECT director.id, director.name FROM director WHERE director.id IN (SELECT "+
@@ -44,7 +109,7 @@ var getMovieDirectors = function(req, query, res, movieInfo, actorsInfo) {
 		if (err) {
 			console.log('err when getMovieDirectors');
 		} else {
-			getMovieDirectors(req, query, res, movieInfo, actorsInfo, directorsInfo);
+			getRatingAndRator(req, query, res, movieInfo, actorsInfo, directorsInfo);
 		}
 	});
 }
@@ -53,6 +118,7 @@ var getMovieActors = function(req, query, res, movieInfo) {
 	var id = query.id;
 	var query = "SELECT actor.id, actor.name FROM actor WHERE actor.id IN (SELECT "+
 		"actor_id FROM plays WHERE movie_id = '"+ id + "');";
+	console.log(getMovieActors);
 	connection.query(query, function(err, actorsInfo) {
 		if (err) {
 			console.log('err when getMovieActors');

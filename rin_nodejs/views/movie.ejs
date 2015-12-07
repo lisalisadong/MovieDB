@@ -73,7 +73,7 @@
                 <img src= "<%= movie.poster%>" width = "100%" height="100%"/>
             </div>
             <div class="col-md-8">
-                <h3><%= movie.name %> (<%= movie.releaseDate.substring(0,4) %>)</h3>
+                <h3><%= movie.name %> (<%= movie.releaseDate %>)</h3>
                 <p>Director: <a href="#" onclick="" class=""><%= movie.director.name %></a></p>
                 <p>Actors: 
                     <a href="#" onclick="" class=""><%= movie.actors[0].name %></a>
@@ -85,7 +85,7 @@
                 <p>Release Date: <%= movie.releaseDate %></p>
                 <p>Duration: <%= movie.duration %> min</p>
                 <p>Genres: <%= movie.genre %></p>
-                <p>Rating: <%= movie.rating %> by <%=movie.rater %> users</p>
+                <p>Rating: <%= movie.rating %> by <%=movie.raters %> users</p>
             </div>
         </div>
         <hr>
