@@ -287,6 +287,31 @@ module.exports = function(app, passport) {
         //res.render('movie.ejs', {user:req.user, movie:movie});
         getMovieInfo(req, res);
     });
+    
+    // person page
+    app.get('/person', function(req, res, next) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        //TODO: do something here with query.id to fetch movie detail
+        var person = {  id:27578, 
+                        name:'Ellen Page', 
+                        dob:'1987-02-21', 
+                        picture: 'http://image.tmdb.org/t/p/original/vDunkYxyQPkzx9EwkfSZVCSzBlO.jpg',
+                        bio: 'Ellen Philpotts-Page (born February 21, 1987, height 5\'\' 1" (1,55 m)), known professionally as Ellen Page, is a Canadian actress. Page received both Golden Globe and Academy Award nominations for Best Actress for her role as the title character in the film Juno. In 2008, Page was nominated for Time\'\'s 100 Most Influential People list and placed #86 on FHM\'\'s Sexiest Women in the World list, and moved up to #70 for 2010. In June 2008, Page was named on Entertainment Weekly\'\'s future A-List stars list. Page resides in her hometown of Halifax, Nova Scotia and has two dogs named Julie and Sprout. She is prone to walk and talk in her sleep. In 2008, Page was one of 30 celebrities who participated in an online ad series for U.S. Campaign for Burma, calling for an end to the military dictatorship in Burma. She describes herself as a pro-choice feminist. In the fall of 2008 Page spent a month living in an eco-village, studying permaculture at the Lost Valley Educational Center outside Eugene, Oregon.',
+                        recent_movies: [   {id:87499, name:'The East', releaseDate:'2013-05-31', poster:'http://image.tmdb.org/t/p/original/n6n0rMFsQhdNoMygr2pyL26wUfM.jpg'},
+                                    {id:154282, name:'Touchy Feely', releaseDate:'2013-01-19', poster:'http://image.tmdb.org/t/p/original/krKqoeVUjFf6Y86zO4PSQ2toK5a.jpg'},
+                                    {id:81836, name:'To Rome with Love', releaseDate:'2012-07-04', poster:'http://image.tmdb.org/t/p/original/zGVAVQufbwE5BjU17OBkXM9PWRS.jpg'},
+                                    {id:45132, name:'Super', releaseDate:'2011-03-31', poster:'http://image.tmdb.org/t/p/original/wRYZdWGCcC7ttY7MFNbIKpR3pnn.jpg'},
+                                    {id:27205, name:'Inception', releaseDate:'2010-07-16', poster:'http://image.tmdb.org/t/p/original/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg'}],
+                        top_movies: [   {id:87499, name:'The East', releaseDate:'2013-05-31', poster:'http://image.tmdb.org/t/p/original/n6n0rMFsQhdNoMygr2pyL26wUfM.jpg'},
+                                    {id:154282, name:'Touchy Feely', releaseDate:'2013-01-19', poster:'http://image.tmdb.org/t/p/original/krKqoeVUjFf6Y86zO4PSQ2toK5a.jpg'},
+                                    {id:81836, name:'To Rome with Love', releaseDate:'2012-07-04', poster:'http://image.tmdb.org/t/p/original/zGVAVQufbwE5BjU17OBkXM9PWRS.jpg'},
+                                    {id:45132, name:'Super', releaseDate:'2011-03-31', poster:'http://image.tmdb.org/t/p/original/wRYZdWGCcC7ttY7MFNbIKpR3pnn.jpg'},
+                                    {id:27205, name:'Inception', releaseDate:'2010-07-16', poster:'http://image.tmdb.org/t/p/original/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg'}]
+                    }
+        console.log(person);
+        res.render('person.ejs', {user:req.user, person:person});
+    });
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
