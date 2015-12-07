@@ -148,6 +148,7 @@ module.exports = function(app, passport) {
     app.get('/movie', function(req, res, next) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
+        console.log(query);
         //TODO: do something here with query.id to fetch movie detail
         var movie = {   id:27205, 
                         name:'Inception', 
@@ -165,8 +166,8 @@ module.exports = function(app, passport) {
                         rating: 9.2,
                         rater: 10,
                         my_rating: {status: true, star: 3, comments: "I like it!"},
-                        comments: [  {id:123, name: 'qingxiao', rating: 4, comments: "Awesome!", time: '2015-12-01 12:00:00', agrees: 10},
-                                    {id:234, name: 'yilun', rating: 5, comments: 'Amazing!', time: '2015-12-02 13:12:32', agrees: 14}]
+                        comments: [  {id:123, name: 'qingxiao', rating: 4, comments: "Awesome!", time: '2015-12-01 12:00:00', agrees: 10, agreed: false},
+                                    {id:234, name: 'yilun', rating: 5, comments: 'Amazing!', time: '2015-12-02 13:12:32', agrees: 14, agreed: true}]
                     }
         console.log(movie);
         res.render('movie.ejs', {user:req.user, movie:movie});
@@ -176,7 +177,7 @@ module.exports = function(app, passport) {
     app.get('/profile', isLoggedIn, function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        //console.log(query);
+        console.log(query);
         //TODO: do something with query.id to fetch profile owner data
         res.render('profile.ejs', {
             user : req.user, profile_owner : null
