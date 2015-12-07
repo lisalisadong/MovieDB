@@ -1,0 +1,2 @@
+ALTER TABLE agrees
+DROP FOREIGN KEY agrees_ibfk_1

@@ -1,0 +1,2 @@
+ALTER TABLE review
+DROP FOREIGN KEY review_ibfk_1

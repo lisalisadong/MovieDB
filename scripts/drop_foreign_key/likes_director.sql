@@ -1,0 +1,2 @@
+ALTER TABLE likes_director
+DROP FOREIGN KEY likes_director_ibfk_1
