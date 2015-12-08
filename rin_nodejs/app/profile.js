@@ -30,7 +30,7 @@ var addFriend = function(req, res) {
 
 }
 
-var generateProfileResponse = function(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo, wantedMoviesInfo) {
+var generateProfileResponse = function(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo, wantedMoviesInfo) {
 	var friendsName = friendsInfo.local.name;
 	if (friendsName == undefined) {
 		friendsName = friendsInfo.facebook.name;
@@ -61,7 +61,7 @@ var generateProfileResponse = function(req, res, friendsID, friendsInfo, actorIn
 	});
 }
 
-var getWantedMovies = function(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo) {
+var getWantedMovies = function(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo) {
 	var user = req.user.id;
 	var query = "SELECT * FROM  WHERE movie WHERE id IN (SELECT movie_id FROM marks WHERE "+
 	"status = 2 AND user_id = '" + user + "');"
@@ -69,13 +69,13 @@ var getWantedMovies = function(req, res, friendsID, friendsInfo, actorInfo, dire
 		if (err) {
 			console.log("err when getWatchedMovies");
 		} else {
-			generateProfileResponse(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo, wantedMoviesInfo);
+			generateProfileResponse(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo, wantedMoviesInfo);
 		}
 	});
 }
 
 
-var getWatchedMovies = function(req, res, friendsID, friendsInfo, actorInfo, directorInfo) {
+var getWatchedMovies = function(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo) {
 	var user = req.user.id;
 	var query = "SELECT * FROM  WHERE movie WHERE id IN (SELECT movie_id FROM marks WHERE "+
 	"status = 1 AND user_id = '" + user + "');"
@@ -83,12 +83,12 @@ var getWatchedMovies = function(req, res, friendsID, friendsInfo, actorInfo, dir
 		if (err) {
 			console.log("err when getWatchedMovies");
 		} else {
-			getWantedMovies(req, res, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo);
+			getWantedMovies(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo);
 		}
 	});
 }
 
-var getLikedDirectors = function(req, res, friendsID, friendsInfo, actorInfo) {
+var getLikedDirectors = function(req, res, isFriend, friendsID, friendsInfo, actorInfo) {
 	var user = req.user.id;
 	var query = "SELECT * FROM director WHERE id IN (SELECT director_id FROM likes_director WHERE "
 		+ "user_id = '" + user + "');";
@@ -96,12 +96,12 @@ var getLikedDirectors = function(req, res, friendsID, friendsInfo, actorInfo) {
 		if (err) {
 			console.log("err when getLikedDirectors");
 		} else {
-			getWatchedMovies(req, res, friendsID, friendsInfo, actorInfo, directorInfo);
+			getWatchedMovies(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo);
 		}
 	});
 };
 
-var getLikedActors = function(req, res, friendsID, friendsInfo); {
+var getLikedActors = function(req, res, isFriend, friendsID, friendsInfo); {
 	var user = req.user.id;
 	var query = "SELECT * FROM actor WHERE id IN (SELECT actor_id FROM likes_actor WHERE "
 		+ "user_id = '" + user + "');";
@@ -109,7 +109,7 @@ var getLikedActors = function(req, res, friendsID, friendsInfo); {
 		if (err) {
 			console.log("err when getLikedActors");
 		} else {
-			getLikedDirectors(req, res, friendsID, friendsInfo, actorInfo);
+			getLikedDirectors(req, res, isFriend, friendsID, friendsInfo, actorInfo);
 		}
 	});
 };
@@ -129,7 +129,7 @@ var getFriendInfo = function(req, res, db, friendsID, callback) {
 	});
 };
 
-var getFriendInfoResponse = function(req, res, friendsID) {
+var getFriendInfoResponse = function(req, res, isFriend, friendsID) {
 	MongoClient.connect(url, function(err, db){
 		if (err) {
 			console.log("connect to mongodb fail");
@@ -138,14 +138,14 @@ var getFriendInfoResponse = function(req, res, friendsID) {
 			console.log("connect to mongodb success");
 			getFriendInfo(req, res, db, friendsID, function(friendsInfo) {
 				db.close();
-				getLikedActors(req, res, friendsID, friendsInfo);
+				getLikedActors(req, res, isFriend, friendsID, friendsInfo);
 			});
 		}
 	});
 };
 
-var getFriend = function(req, res) {
-	var user = req.user.id;
+var getFriend = function(req, res, isFriend) {
+	var owner = req.profile_id;
 	var query = "(SELECT user_id2 FROM friendWith WHERE user_id1 = '"
 	+ user + "') UNION (SELECT user_id1 FROM friendWith WHERE user_id2 = '" + user + "') LIMIT 10; ";
 	console.log(query);
@@ -153,7 +153,7 @@ var getFriend = function(req, res) {
 		if (err) {
 			console.log('err when getFirend');
 		} else {
-			getFriendInfoResponse(req, res, db, friendsID);
+			getFriendInfoResponse(req, res, isFriend, friendsID);
 		}
 	});
 };
@@ -161,7 +161,27 @@ var getFriend = function(req, res) {
 var isFriend = function(req, res) {
 	var user = req.user.id;
 	var owner = req.profile_id;
-}
+	if (user == owner) {
+		var isFriend = true;
+		getFirend(req, res, isFriend);
+	} else {
+		var query = "(SELECT * FROM friendWith WHERE user_id1 = '"+ user + "' AND user_id2 = '"
+		+ owner +"') UNION (SELECT * FROM friendWith WHERE user_id1 = '"+ owner + "' AND user_id2 = '"
+		+ user +"');";
+		console.log(query);
+		console.query(query, function(err, friendResult) {
+			if (err) {
+				console.log('err when isFriend');
+			} else if (friendResult.length == 0) {
+				var isFriend = false;
+				getFirend(req, res, isFriend);
+			} else {
+				var isFriend = true;
+				getFirend(req, res, isFriend);
+			}
+		});
+	};
+};
 
 
 
