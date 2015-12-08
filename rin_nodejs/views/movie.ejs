@@ -73,13 +73,13 @@
                 <img src= "<%= movie.poster%>" width = "100%" height="100%"/>
             </div>
             <div class="col-md-8">
-                <h3><%= movie.name %> (<%= movie.releaseDate %>)</h3>
-                <p>Director: <a href="#" onclick="" class=""><%= movie.director.name %></a></p>
+                <h3><%= movie.name %> (<%= movie.releaseDate.substring(0,4) %>)</h3>
+                <p>Director: <a href="/person?id=<%=movie.director.id%>" onclick="" class=""><%= movie.director.name %></a></p>
                 <p>Actors: 
-                    <a href="#" onclick="" class=""><%= movie.actors[0].name %></a>
+                    <a href="/person?id=<%=movie.actors[0].id%>" onclick="" class=""><%= movie.actors[0].name %></a>
                     <% for (var i = 1; i < movie.actors.length; i++) {%>
                      / 
-                    <a href="#" onclick="" class=""><%= movie.actors[i].name %></a>
+                    <a href="/person?id=<%=movie.actors[i].id%>" onclick="" class=""><%= movie.actors[i].name %></a>
                     <% } %>
                 </p>
                 <p>Release Date: <%= movie.releaseDate %></p>
@@ -101,15 +101,15 @@
             <div class='col-md-11 col-sm-offset-1'>
                 <h4>Mark as: </h4>
                 <% if (movie.my_mark.length == 0) { %>
-                <div class="form-group">
-                    <label class="radio-inline">
-                        <input type="radio" name="status" id="status1" value="status1"> I have watched this movie
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="status" id="status2" value="status2"> I want to watch this movie    
-                    </label>
-                    <button type="submit" class="btn btn-danger btn-sm col-sm-offset-1">Confirm</button>
-                </div>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            <input type="radio" name="status" id="status1" value="status1"> I have watched this movie
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="status" id="status2" value="status2"> I want to watch this movie    
+                        </label>
+                        <button type="submit" class="btn btn-danger btn-sm col-sm-offset-1">Confirm</button>
+                    </div>
                 <%} else {%>
                     <% if (movie.my_mark == 1) {
                         var status = 'I have watched this movie';
@@ -123,9 +123,7 @@
             <div class='col-md-11 col-sm-offset-1'>
                 <h4>My Rating: </h4>
                 <% if (movie.my_rating.length == 0) { %>
-                <form class="form-horizontal" action="/movie/:id/addRating" method="get" name="movie" value=<%movie.id%>>
                     <div class="form-group">
-                        <label for="radio-inline" class="control-label col-sm-2">Rating: </label>
                         <label class="radio-inline">
                             <input type="radio" name="rating" id="inlineRadio1" value="option1"> 1
                         </label>
@@ -144,13 +142,12 @@
                     </div>
                     <p></P>
                     <div class="form-group">
-                        <textarea class="form-control" rows="3" placeholder="Comments" name = "comment"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Comments"></textarea>
                     </div>
                     <p></P>
                     <div class="form-group">
                         <button type="submit" class="btn btn-danger">Submit</button>
                     </div>
-                </form>
                 <%} else {%>
                     <% if (movie.my_rating.star != null) { %>
                     <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating.star%> / 5</p>

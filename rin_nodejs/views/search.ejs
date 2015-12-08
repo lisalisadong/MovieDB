@@ -92,7 +92,18 @@
 		</div>
 	</form>
 	<% if (results != null) { %>
-
+		<% if (results.length == 0) { %>
+		<div class="row">
+			<div class="col-md-7 col-sm-offset-2">
+				<hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-sm-offset-2">
+			<p>no result matches your search</p>
+			</div>
+		</div>
+		<%}%>
 		<% for(var i=0; i<results.length; i++) { %>
 		<div class="row">
 			<div class="col-md-7 col-sm-offset-2">

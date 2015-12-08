@@ -91,7 +91,7 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
         id: movieInfo[0].id,
         name: movieInfo[0].name,
         duration: movieInfo[0].duration,
-        releaseDate: movieInfo[0].releaseDate,
+        releaseDate: date,
         poster: movieInfo[0].poster,
         overview: movieInfo[0].overview,
         genre: movieInfo[0].genre,
@@ -104,8 +104,6 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
         comments:{}
 
     };
-    console.log(movie);
-    console.log(myMark.length == 0);
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
 

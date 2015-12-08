@@ -101,8 +101,19 @@ module.exports = function(app, passport) {
         //console.log(query);
         req.profile_id = query.id;
         //TODO: do something with query.id to fetch profile owner data
+        var profile_owner = {   id: '5663e4cb3d868a750e2c02e8',
+                                name: 'Yilun Fu',
+                                avatar: 'https://scontent.xx.fbcdn.net/hprofile-xfa1/v/t1.0-1/c0.90.720.540/p720x720/11149417_1720935731466512_5533335233655428142_n.jpg?oh=eab511501f033eba1790c65cf16ad621&oe=56F0861D',
+                                is_me: false,
+                                is_friend: false,
+                                friends: [{id: '1234', name: 'Ma', avatar: 'https://scontent.xx.fbcdn.net/hprofile-xfa1/v/t1.0-1/c0.90.720.540/p720x720/11149417_1720935731466512_5533335233655428142_n.jpg?oh=eab511501f033eba1790c65cf16ad621&oe=56F0861D'}],
+                                actors: [],
+                                directors: [],
+                                watched_movies: [],
+                                wanted_movies: []
+                            }
         res.render('profile.ejs', {
-            user : req.user, profile_owner : null
+            user : req.user, profile_owner : profile_owner
         });
     });
 

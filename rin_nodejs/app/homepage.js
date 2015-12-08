@@ -12,7 +12,6 @@ var connection = mysql.createConnection({
     database: 'RinDataBase'
 });
 
-
 var getDay = function(date) {
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -21,8 +20,6 @@ var getDay = function(date) {
     if (day < 10) day = '0' + day;
     return year + '-' + month + '-' + day;
 }
-
-
 
 function getRecommendationForUser(req, res, callback) {
     var today = getDay(new Date());
