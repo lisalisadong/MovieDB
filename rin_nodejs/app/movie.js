@@ -44,6 +44,47 @@ var getDay = function(date) {
     return year + '-' + month + '-' + day;
 }
 
+var insertMark = function(req, res) {
+	var user = req.user.id;
+	var movie = req.movie_id;
+
+}
+
+
+var insertRating = function(req, res) {
+	console.log(req);
+	var user = req.user.id;
+	var movie= req.params._id;
+	console.log(movie);
+	var rating = 0;
+	switch(req.query.rating) {
+		case "option1":
+			rating = 2;
+		case "option2":
+			rating = 4;
+		case "option3":
+			rating = 6;
+		case "option4":
+			rating = 8;
+		case "option5":
+			rating = 10;
+			break;
+	}
+	var comment = req.query.comment;
+	var query = "INSERT INTO review (user_id, movie_id, star, comment) VALUES ('"
+		+user+"','"+movie+"','"+rating+"','"+comment+"');";
+	console.log(query);
+	req.movie_id = movie;
+	connection.query(query, function(err) {
+		if (err) {
+			console.log('err when insertRating');
+		} else {
+			getMovieInfo(req, res);
+		}
+	});
+
+}
+
 var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark, comments) {
 	var date = getDay(movieInfo[0].releaseDate);
     var movie = {
@@ -178,4 +219,8 @@ var getMovieInfo = function(req, res) {
 
 exports.getMovieInfoResponse = function(req, res) {
 	getMovieInfo(req, res);
+}
+
+exports.insertRatingResponse = function(req, res) {
+	insertRating(req, res);
 }

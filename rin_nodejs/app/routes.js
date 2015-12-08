@@ -51,6 +51,10 @@ module.exports = function(app, passport) {
         res.render('index.ejs');
     });
 
+    app.get('/movie/:id/addRating', function(req,res) {
+        movie.insertRatingResponse(req, res);
+    });
+
     // movie page
     app.get('/movie', function(req, res, next) {
         var url_parts = url.parse(req.url, true);
