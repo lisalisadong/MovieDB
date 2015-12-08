@@ -96,9 +96,9 @@
             </div>
         </div>
         <hr>
+        <% if (user != null) {%>
         <div class="row">
             <div class='col-md-11 col-sm-offset-1'>
-            <% if (user != null) {%>
                 <h4>My Rating: </h4>
                 <% if (movie.my_rating != null) { %>
                 <form class="form-horizontal">
@@ -146,10 +146,10 @@
                     <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating.star%> / 5</p>
                     <p><label class="control-label col-sm-2">Comments: </label><%= movie.my_rating.comments%></p>
                 <%}%>
-            <%}%>
             </div>
         </div>
         <hr>
+        <%}%>
         <div class="row">
             <div class='col-md-10 col-sm-offset-1'>
                 <h4>Comments: </h4>
