@@ -18,9 +18,6 @@ var connection = mysql.createConnection({
 });
 
 
-
-
-
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
