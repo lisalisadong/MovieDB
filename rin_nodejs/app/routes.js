@@ -20,9 +20,6 @@ var connection = mysql.createConnection({
 });
 
 
-
-
-
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
@@ -249,7 +246,7 @@ module.exports = function(app, passport) {
         user.local.password = undefined;
         user.local.username = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/profile?id=' + req.user.id);
         });
     });
 
@@ -258,7 +255,7 @@ module.exports = function(app, passport) {
         var user            = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/profile?id=' + req.user.id);
         });
     });
 
@@ -267,7 +264,7 @@ module.exports = function(app, passport) {
         var user           = req.user;
         user.twitter.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/profile?id=' + req.user.id);
         });
     });
 
@@ -276,8 +273,39 @@ module.exports = function(app, passport) {
         var user          = req.user;
         user.google.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/profile?id=' + req.user.id);
         });
+    });
+
+
+
+    // catch 404 and forward to error handler
+    app.use(function(req, res, next) {
+      var err = new Error('Not Found');
+      err.status = 404;
+      next(err);
+    });
+
+    // error handlers
+
+    // development error handler
+    if (app.get('env') === 'development') {
+      app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+          message: err.message,
+          error: err
+        });
+      });
+    }
+
+    // production error handler
+    app.use(function(err, req, res, next) {
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: {}
+      });
     });
 
 

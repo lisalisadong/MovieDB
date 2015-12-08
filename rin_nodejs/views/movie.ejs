@@ -175,11 +175,11 @@
                     </div>
                     <%if (!movie.comments[i].agreed) {%>
                         <div class = "col-md-2">
-                            <button type="button" class="btn btn-link">agree</button>
+                            <a href="/agree" class="btn btn-link">agree</a>
                         </div>
                     <%} else {%>
                         <div class = "col-md-2">
-                            <button type="button" class="btn btn-link">undo agree</button>
+                            <a href="/undo" class="btn btn-link">undo agree</a>
                         </div>
                     <%}%>
                 </div>
