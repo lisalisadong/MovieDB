@@ -142,7 +142,7 @@ var getPersonInfo = function(req, res) {
 			getRecentMovieForActor(req, res, personInfo);
 		} else {
 			connection.query(queryDirector, function(err, personInfo) {
-				console(queryDirector);
+				console.log(queryDirector);
 				if (err) {
 					console.log('err when getPersonInfo');
 				} else {
