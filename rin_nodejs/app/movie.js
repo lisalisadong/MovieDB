@@ -59,6 +59,7 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
         rating: rating,
         raters: raters,
         my_rating:myRating,
+        my_mark:myMark,
         comments:{}
 
     };
@@ -74,6 +75,11 @@ var getComments = function(req, res, movieInfo, actorsInfo, directorsInfo, ratin
 
 var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating) {
     var id = req.movie_id;
+    if (req.user == null) {
+    	var myMark = null;
+    	getComments(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark);
+    	return;
+    }
     var user = req.user.id;
     var query = "SELECT status FROM marks WHERE user_id = '"+user+"' AND movie_id = '"+
     id+"';";
@@ -89,6 +95,11 @@ var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating,
 
 var getMyRating = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters) {
     var id = req.movie_id;
+    if (req.user == null) {
+    	var myRating = null;
+    	getMyMark(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating);
+    	return;
+    }
     var user = req.user.id;
     var query = "SELECT star, comment FROM review WHERE movie_id = '" + id + "' AND user_id = '"
     + user + "';";

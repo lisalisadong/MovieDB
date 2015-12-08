@@ -94,7 +94,7 @@ var getTopMoviesForDirector = function(req, res, personInfo, recentMovies) {
 	var id = req.person_id;
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie INNER JOIN "
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
-	+ "WHERE id IN (SELECT movie_id FROM directors " + "WHERE director_id = '"+ id 
+	+ "WHERE id IN (SELECT movie_id FROM directs " + "WHERE director_id = '"+ id 
 	+"') ORDER BY helper.rating DESC LIMIT 10;";
 	console.log(query);
 	connection.query(query, function(err, topMovies) {
@@ -137,7 +137,7 @@ var getPersonInfo = function(req, res) {
 	connection.query(queryActor, function(err, personInfo) {
 		if (err) {
 			console.log('err when getPersonInfo');
-		} else if (personInfo.length == 0) {
+		} else if (personInfo.length != 0) {
 			console.log(personInfo);
 			getRecentMovieForActor(req, res, personInfo);
 		} else {
