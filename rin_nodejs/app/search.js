@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var MongoClient = require('mongodb').MongoClient;
 
 var connection = mysql.createConnection({
     host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
@@ -12,20 +13,20 @@ var connection = mysql.createConnection({
 
 function getResults(req, callback) {
 	var input = req.query.input;
-	input = input.replace(" ","%");
+	fuzzy = input.replace(" ","%");
 	var option = 1;
 	switch (req.query.searchOptions) {
 		case "option1":
 			option = 1;
-			var query = "SELECT * FROM movie WHERE LCASE(name) LIKE LCASE('%" + input + "%');";
+			var query = "SELECT * FROM movie WHERE LCASE(name) LIKE LCASE('%" + fuzzy + "%');";
 			break;
 		case "option2":
 			option = 2;
-			var query = "SELECT * FROM actor WHERE LCASE(name) LIKE LCASE('%" + input + "%');"
+			var query = "SELECT * FROM actor WHERE LCASE(name) LIKE LCASE('%" + fuzzy + "%');"
 			break;
 		case "option3":
 			option = 3;
-			var query = "SELECT * FROM director WHERE LCASE(name) LIKE LCASE('%" + input + "%');"
+			var query = "SELECT * FROM director WHERE LCASE(name) LIKE LCASE('%" + fuzzy + "%');"
 			break;
 		case "option4":
 			option = 4;

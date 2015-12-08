@@ -50,10 +50,16 @@ var generateMovieResponse = function(req, res, personInfo, recentMovies, topMovi
 		topMovies[i].releaseDate = getDay(topMovies[i].releaseDate);
 	}
 
+	if (personInfo[0].dateOfBirth) {
+		personInfo[0].dateOfBirth = getDay(personInfo[0].dateOfBirth);
+	} else {
+		personInfo[0].dateOfBirth = "";
+	}
+
 	var person = {
 		id : personInfo[0].id,
 		name : personInfo[0].name,
-		dob : getDay(personInfo[0].dateOfBirth),
+		dob : personInfo[0].dateOfBirth,
 		picture : personInfo[0].picture,
 		bio : personInfo[0].bio,
 		recent_movies : recentMovies,
