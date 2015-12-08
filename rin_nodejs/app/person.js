@@ -42,10 +42,18 @@ var getDay = function(date) {
 };
 
 var generateMovieResponse = function(req, res, personInfo, recentMovies, topMovies) {
+	
+	for (var i = 0; i < recentMovies.length; i++) {
+		recentMovies[i].releaseDate = getDay(recentMovies[i].releaseDate);
+	}
+	for (var i = 0; i < topMovies.length; i++) {
+		topMovies[i].releaseDate = getDay(topMovies[i].releaseDate);
+	}
+
 	var person = {
 		id : personInfo[0].id,
 		name : personInfo[0].name,
-		dob : personInfo[0].dateOfBirth,
+		dob : getDay(personInfo[0].dateOfBirth),
 		picture : personInfo[0].picture,
 		bio : personInfo[0].bio,
 		recent_movies : recentMovies,
@@ -59,7 +67,7 @@ var getTopMoviesForActor = function(req, res, personInfo, recentMovies) {
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie INNER JOIN "
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
 	+ "WHERE id IN (SELECT movie_id FROM plays " + "WHERE actor_id = '"+ id 
-	+"') ORDER BY helper.rating DESC LIMIT 10;";
+	+"') ORDER BY helper.rating DESC LIMIT 5;";
 	console.log(query);
 	connection.query(query, function(err, topMovies) {
 		if (err) {
@@ -77,9 +85,8 @@ var getRecentMovieForActor = function(req, res, personInfo) {
     p.setMonth(p.getMonth() - 3);
     var past = getDay(p);
 	var id = req.person_id;
-	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie WHERE releaseDate > '"
-     + past + "' AND releaseDate <= '" + today + "' AND id IN (SELECT movie_id FROM plays "+
-	"WHERE actor_id = '"+ id + "');";
+	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie WHERE id IN (SELECT movie_id FROM plays "+
+	"WHERE actor_id = '"+ id + "') ORDER BY releaseDate DESC LIMIT 5;";
 	console.log(query);
 	connection.query(query, function(err, recentMovies) {
 		if (err) {
@@ -95,7 +102,7 @@ var getTopMoviesForDirector = function(req, res, personInfo, recentMovies) {
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie INNER JOIN "
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
 	+ "WHERE id IN (SELECT movie_id FROM directs " + "WHERE director_id = '"+ id 
-	+"') ORDER BY helper.rating DESC LIMIT 10;";
+	+"') ORDER BY helper.rating DESC LIMIT 5;";
 	console.log(query);
 	connection.query(query, function(err, topMovies) {
 		if (err) {
@@ -113,9 +120,8 @@ var getRecentMovieForDirector = function(req, res, personInfo) {
     p.setMonth(p.getMonth() - 3);
     var past = getDay(p);
 	var id = req.person_id;
-	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie WHERE releaseDate > '"
-     + past + "' AND releaseDate <= '" + today + "' AND id IN (SELECT movie_id FROM directs "+
-	"WHERE director_id = '"+ id + "');";
+	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie WHERE id IN (SELECT movie_id FROM directs "+
+	"WHERE director_id = '"+ id + "') ORDER BY releaseDate DESC LIMIT 5;";
 	console.log(query);
 	connection.query(query, function(err, recentMovies) {
 		if (err) {

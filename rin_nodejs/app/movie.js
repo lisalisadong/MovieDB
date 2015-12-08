@@ -63,8 +63,6 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
         comments:{}
 
     };
-    console.log(movie);
-    console.log(myMark.length == 0);
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
 

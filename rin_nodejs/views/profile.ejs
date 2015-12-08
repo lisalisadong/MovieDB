@@ -83,12 +83,20 @@
             </div>
         </div>
         <!--add friend button-->
-        <% if (profile_owner.is_me == false && profile_owner.is_friend == false) { %>
-        <div class="row">
-            <div class="col-md-12">
-                <a href="addFriend" class="btn btn-danger btn-lg btn-block">Add Friend</a>
+        <% if (profile_owner.is_me == false ) { %>
+            <% if (profile_owner.is_friend == false) {%>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="/follow" class="btn btn-danger btn-lg btn-block">Follow</a>
+                </div>
             </div>
-        </div>
+            <%} else {%>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="/unfollow" class="btn btn-danger btn-lg btn-block">Unfollow</a>
+                </div>
+            </div>
+            <%}%>
         <%  } %>
         <div class="row">
             <div class="col-md-12">

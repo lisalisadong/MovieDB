@@ -74,7 +74,7 @@
             </div>
             <div class="col-md-8">
                 <h3><%= person.name %></h3>
-                <p>Date Of Birth: <a href="#" onclick="" class=""><%= person.dob %></a></p>
+                <p>Date Of Birth: <%= person.dob %></p>
                 <%if (true) {%>
                     <a href="addFavorite" class="btn btn-danger btn-sm">Like</a>
                 <%} else {%>
@@ -99,7 +99,7 @@
                         <img src="<%= person.recent_movies[i].poster%>" width="100%" height="100%">
                         <p>
                         <a href="#" onclick="" class=""><%=person.recent_movies[i].name%></a>
-                        <%=person.recent_movies[i].releaseDate%>
+                        <%=person.recent_movies[i].releaseDate.substring(0,4)%>
                         </p>
                     </div>
                     <% } %>
@@ -116,7 +116,7 @@
                         <img src="<%= person.top_movies[i].poster%>" width="100%" height="100%">
                         <p>
                         <a href="#" onclick="" class=""><%=person.top_movies[i].name%></a>
-                        <%=person.top_movies[i].releaseDate%>
+                        <%=person.top_movies[i].releaseDate.substring(0,4)%>
                         </p>
                     </div>
                     <% } %>

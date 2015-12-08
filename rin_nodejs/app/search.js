@@ -12,6 +12,7 @@ var connection = mysql.createConnection({
 
 function getResults(req, callback) {
 	var input = req.query.input;
+	input = input.replace(" ","%");
 	var option = 1;
 	switch (req.query.searchOptions) {
 		case "option1":
