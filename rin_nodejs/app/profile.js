@@ -14,6 +14,17 @@ var connection = mysql.createConnection({
     database: 'RinDataBase'
 });
 
+// profile = {
+// 	user: current_user,
+// 	profile_owner: profile_owner,
+// 	isFriend: true or false,
+// 	friendsInfo：{id: id, name: name, avatar: avatar},
+// 	actorInfo: {id:id, name:name, picture:picture},
+// 	director: {id:id, name:name, picture:picture},
+// 	watchedMoviesInfo: {id:id, name:name, picture:picture},
+// 	wantedMoviesInfo: {id:id, name:name, picture:picture}
+// }
+
 var addFriend = function(req, res) {
 	var user = req.user.id;
 
@@ -146,6 +157,11 @@ var getFriend = function(req, res) {
 		}
 	});
 };
+
+var isFriend = function(req, res) {
+	var user = req.user.id;
+	var owner = req.profile_id;
+}
 
 
 
