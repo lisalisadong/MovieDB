@@ -33,13 +33,13 @@ function getRecommendationForUser(req, res, callback) {
     var results = [];
     var recentMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE releaseDate > '"
      + past + "' AND releaseDate <= '" + today + "' AND movie.genre IN (SELECT genre FROM movie WHERE id IN (SELECT movie_id FROM marks WHERE user_id = '"
-      + user + "')) ORDER BY releaseDate DESC;" 
+      + user + "')) ORDER BY releaseDate DESC LIMIT 10;" 
     var comingMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE releaseDate > '"
      + today + "' AND movie.genre IN (SELECT genre FROM movie WHERE id IN (SELECT movie_id FROM marks WHERE user_id = '"
-      + user + "')) ORDER BY releaseDate DESC;"
+      + user + "')) ORDER BY releaseDate DESC LIMIT 10;"
     var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id " +
                 "WHERE review.star = 10 AND movie.genre IN (SELECT genre FROM movie WHERE id IN "+
-                "(SELECT movie_id FROM marks WHERE user_id = '" + user + "')) " + "ORDER BY releaseDate DESC;";
+                "(SELECT movie_id FROM marks WHERE user_id = '" + user + "')) " + "ORDER BY releaseDate DESC LIMIT 10;";
     var queries = [];
     queries.push(recentMovie);
     queries.push(comingMovie);
@@ -75,9 +75,9 @@ var getRecommendation = function(callback){
     var p = new Date();
     p.setMonth(p.getMonth() - 12);
     var past = getDay(p);
-    var recentMovie = "SELECT * FROM movie WHERE releaseDate > '" + past + "' AND releaseDate <= '" + today +"' ORDER BY releaseDate DESC;";
-    var comingMovie = "SELECT * FROM movie WHERE releaseDate > '" + today +"';";
-    var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE review.star = 10 ORDER BY releaseDate DESC;";
+    var recentMovie = "SELECT * FROM movie WHERE releaseDate > '" + past + "' AND releaseDate <= '" + today +"' ORDER BY releaseDate DESC LIMIT 10;";
+    var comingMovie = "SELECT * FROM movie WHERE releaseDate > '" + today +"' LIMIT 10;";
+    var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE review.star = 10 ORDER BY releaseDate DESC LIMIT 10;";
     var queries = [];
     queries.push(recentMovie);
     queries.push(comingMovie);

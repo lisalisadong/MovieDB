@@ -94,7 +94,8 @@ module.exports = function(app, passport) {
     app.get('/profile', isLoggedIn, function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        console.log(query);
+        //console.log(query);
+        req.profile_id = query.id;
         //TODO: do something with query.id to fetch profile owner data
         res.render('profile.ejs', {
             user : req.user, profile_owner : null
