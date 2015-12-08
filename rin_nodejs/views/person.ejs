@@ -75,6 +75,11 @@
             <div class="col-md-8">
                 <h3><%= person.name %></h3>
                 <p>Date Of Birth: <a href="#" onclick="" class=""><%= person.dob %></a></p>
+                <%if (true) {%>
+                    <a href="addFavorite" class="btn btn-danger btn-sm">Like</a>
+                <%} else {%>
+                    <a href="removeFavorite" class="btn btn-danger btn-sm">Undo Like</a>
+                <%}%>
             </div>
         </div>
         <hr>
