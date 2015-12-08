@@ -99,18 +99,31 @@
         <% if (user != null) {%>
         <div class="row">
             <div class='col-md-11 col-sm-offset-1'>
+                <h4>Mark as: </h4>
+                <% if (movie.my_mark.length == 0) { %>
+                <div class="form-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="status" id="status1" value="status1"> I have watched this movie
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="status" id="status2" value="status2"> I want to watch this movie    
+                    </label>
+                    <button type="submit" class="btn btn-danger btn-sm col-sm-offset-1">Confirm</button>
+                </div>
+                <%} else {%>
+                    <% if (movie.my_mark == 1) {
+                        var status = 'I have watched this movie';
+                       } else {var status = 'I want to watch this movie';}%>
+                    <p>Marked as: <%= status %>.</p>
+                <%}%>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class='col-md-11 col-sm-offset-1'>
                 <h4>My Rating: </h4>
-                <% if (movie.my_rating != null) { %>
+                <% if (movie.my_rating.length == 0) { %>
                 <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="radio-inline" class="control-label col-sm-2">Mark as:    </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="status" id="status1" value="status1"> I have watched this movie
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="status" id="status2" value="status2"> I want to watch this movie
-                        </label>
-                    </div>
                     <div class="form-group">
                         <label for="radio-inline" class="control-label col-sm-2">Rating: </label>
                         <label class="radio-inline">
@@ -135,16 +148,16 @@
                     </div>
                     <p></P>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="submit" class="btn btn-danger">Submit</button>
                     </div>
                 </form>
                 <%} else {%>
-                    <% if (movie.my_rating.status) {
-                        var status = 'I have watched this movie';
-                       } else {var status = 'I want to watch this movie';}%>
-                    <p><label class="control-label col-sm-2">Mark as: </label><%= status %>.</p>
+                    <% if (movie.my_rating.star != null) { %>
                     <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating.star%> / 5</p>
+                    <%}%>
+                    <% if (movie.my_rating.comments != null) { %>
                     <p><label class="control-label col-sm-2">Comments: </label><%= movie.my_rating.comments%></p>
+                    <%}%>
                 <%}%>
             </div>
         </div>
