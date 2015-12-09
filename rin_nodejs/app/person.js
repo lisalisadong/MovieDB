@@ -37,6 +37,7 @@ var addLikeDirector = function(req, res) {
 	var id = req.user.id;
 	var personId = req.params.id;
 	var query = "INSERT INTO likes_director (user_id, director_id) VALUES ('"+id+"','"+personId+"');";
+	console.log(query);
 	connection.query(query, function(err) {
 		if (err) {
 			console.log('err when addLikeDirector');
@@ -46,11 +47,12 @@ var addLikeDirector = function(req, res) {
 	});
 }
 
-var addLikeActor = function(req, res) {
+var addLikeActor = function(req, res) {l
 	var id = req.user.id;
 	var personId = req.params.id;
 	var query = "INSERT INTO likes_actor (user_id, actor_id) VALUES ('"+id+"','"+personId+"');";
 	connection.query(query, function(err) {
+		console.log(query);
 		if (err) {
 			console.log('err when addLikeActor');
 		} else {
@@ -60,15 +62,16 @@ var addLikeActor = function(req, res) {
 }
 
 var addLike = function(req, res) {
-	var id = req.user.id;
 	var personId = req.params.id;
-	var queryActor = "SELECT * FROM actor WHERE id = '"+ id +"';";
+	var query = "SELECT * FROM actor WHERE id = '"+ personId +"';";
 	connection.query(query, function(err, actorInfo) {
 		if (err) {
 			console.log("err when addLike");
 		} else if (actorInfo.length != 0) {
+			console.log("actor");
 			addLikeActor(req, res);
 		} else {
+			console.log("director");
 			addLikeDirector(req, res);
 		}
 	})
@@ -83,7 +86,7 @@ var getDay = function(date) {
     return year + '-' + month + '-' + day;
 };
 
-var generateMovieResponse = function(req, res, personInfo, recentMovies, topMovies) {
+var generateMovieResponse = function(req, res, personInfo, recentMovies, topMovies, isLiked) {
 	
 	for (var i = 0; i < recentMovies.length; i++) {
 		recentMovies[i].releaseDate = getDay(recentMovies[i].releaseDate);
@@ -104,9 +107,34 @@ var generateMovieResponse = function(req, res, personInfo, recentMovies, topMovi
 		picture : personInfo[0].picture,
 		bio : personInfo[0].bio,
 		recent_movies : recentMovies,
-		top_movies : topMovies
+		top_movies : topMovies,
+		is_liked: isLiked
 	};
+	console.log(person);
 	res.render('person.ejs', {user:req.user, person:person});
+}
+
+var getIsLiked = function(req, res, personInfo, recentMovies, topMovies) {
+	var id = req.params.id;
+	if (req.user == null) {
+		generateMovieResponse(req, res, personInfo, recentMovies, topMovies, true);
+		return;
+	}
+	var user = req.user.id;
+	var query = "(SELECT user_id FROM likes_actor WHERE user_id = '"+ user+"' AND actor_id = '"+id+"')"+
+	" UNION (SELECT user_id FROM likes_director WHERE user_id = '"+ user+"' AND director_id = '"+id+"');";
+	console.log(query);
+	connection.query(query, function(err, isLiked) {
+		console.log(isLiked.length);
+		if (err) {
+			console.log('err when getIsLike');
+		} else if (isLiked.length == 0) {
+			generateMovieResponse(req, res, personInfo, recentMovies, topMovies, false);
+		} else {
+			generateMovieResponse(req, res, personInfo, recentMovies, topMovies, true);
+		}
+	});
+
 }
 
 var getTopMoviesForActor = function(req, res, personInfo, recentMovies) {
@@ -120,7 +148,7 @@ var getTopMoviesForActor = function(req, res, personInfo, recentMovies) {
 		if (err) {
 			console.log('err when getTopMovies');
 		} else {
-			generateMovieResponse(req, res, personInfo, recentMovies, topMovies);
+			getIsLiked(req, res, personInfo, recentMovies, topMovies);
 		}
 	});
 };

@@ -61,7 +61,7 @@ var insertMark = function(req, res) {
 		if (err) {
 			console.log("err when insertMark");
 		} else {
-			getMovieInfo(req, res);
+			res.redirect('/movie/'+movie);
 		}
 	});
 
@@ -95,9 +95,9 @@ var insertRating = function(req, res) {
 	req.movie_id = movie;
 	connection.query(query, function(err, req, res) {
 		if (err) {
-			console.log(err);
+			console.log('err when insertRating');
 		} else {
-			getMovieInfo(req, res);
+			res.redirect('/movie/'+movie);
 		}
 	});
 
@@ -243,6 +243,10 @@ exports.getMovieInfoResponse = function(req, res) {
 }
 
 exports.insertRatingResponse = function(req, res) {
-	console.log(req.body);
+	//console.log(req.body);
 	insertRating(req, res);
+}
+
+exports.insertMarkResponse = function(req, res) {
+    insertMark(req, res);
 }
