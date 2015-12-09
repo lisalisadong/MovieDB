@@ -88,7 +88,6 @@
 	                    <p>
 	                        <strong>id</strong>: <%= user._id %><br>
 	                        <strong>email</strong>: <%= user.local.email %><br>
-	                        <strong>password</strong>: <%= user.local.password %>
 	                    </p>
 	                    
 	                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
@@ -108,7 +107,6 @@
 	                <% if (user.facebook.token) { %>
 	                    <p>
 	                        <strong>id</strong>: <%= user.facebook.id %><br>
-	                        <strong>token</strong>: <%= user.facebook.token %><br>
 	                        <strong>email</strong>: <%= user.facebook.email %><br>
 	                        <strong>name</strong>: <%= user.facebook.name %><br>
 	                    </p>
