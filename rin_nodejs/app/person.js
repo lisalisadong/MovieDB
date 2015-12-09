@@ -63,7 +63,7 @@ var addLikeActor = function(req, res) {l
 
 var addLike = function(req, res) {
 	var personId = req.params.id;
-	var query = "SELECT * FROM actor WHERE id = '"+ personId +"';";
+	var query = "SELECT id FROM actor WHERE id = '"+ personId +"';";
 	connection.query(query, function(err, actorInfo) {
 		if (err) {
 			console.log("err when addLike");

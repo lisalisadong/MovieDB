@@ -46,9 +46,9 @@ var getDay = function(date) {
 
 var insertMark = function(req, res) {
 	var user = req.user.id;
-	var movie = req.movie_id;
+	var movie = req.params.id;
 	console.log(req);
-	switch(req.query.status) {
+	switch(req.body.status) {
 		case "status1":
 			var mark = 0;
 		case "status2":
@@ -56,8 +56,8 @@ var insertMark = function(req, res) {
 			break;
 	}
 	var query = "INSERT INTO marks (user_id, movie_id, status) VALUES ('"+user+"','"+movie+"','"+mark+"');";
-	req.movie_id = movie;
-	connection.query(query, function(err,req,res) {
+	console.log(query);
+	connection.query(query, function(err) {
 		if (err) {
 			console.log("err when insertMark");
 		} else {
@@ -75,7 +75,7 @@ var insertRating = function(req, res) {
 	console.log(movie);
 	console.log(req);
 	var rating = 0;
-	switch(req.query.rating) {
+	switch(req.body.rating) {
 		case "option1":
 			rating = 2;
 		case "option2":
@@ -88,12 +88,13 @@ var insertRating = function(req, res) {
 			rating = 10;
 			break;
 	}
-	var comment = req.query.comment;
+	var comment = req.body.comment;
+    console.log(comment);
 	var query = "INSERT INTO review (user_id, movie_id, star, comment) VALUES ('"
 		+user+"','"+movie+"','"+rating+"','"+comment+"');";
 	console.log(query);
-	req.movie_id = movie;
-	connection.query(query, function(err, req, res) {
+	//req.movie_id = movie;
+	connection.query(query, function(err) {
 		if (err) {
 			console.log('err when insertRating');
 		} else {
@@ -123,6 +124,7 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
         comments:{}
 
     };
+    console.log(myRating);
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
 
