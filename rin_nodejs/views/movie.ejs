@@ -101,6 +101,7 @@
             <div class='col-md-11 col-sm-offset-1'>
                 <h4>Mark as: </h4>
                 <% if (movie.my_mark.length == 0) { %>
+                <form method="post" action="/movie/<%=movie.id%>/addMarks">
                     <div class="form-group">
                         <label class="radio-inline">
                             <input type="radio" name="status" id="status1" value="status1"> I have watched this movie
@@ -110,6 +111,7 @@
                         </label>
                         <button type="submit" class="btn btn-danger btn-sm col-sm-offset-1">Confirm</button>
                     </div>
+                </form>
                 <%} else {%>
                     <% if (movie.my_mark == 1) {
                         var status = 'I have watched this movie';
@@ -143,7 +145,7 @@
                     </div>
                     <p></P>
                     <div class="form-group">
-                        <textarea class="form-control" rows="3" placeholder="Comments" name="comments"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Comments" name="comment"></textarea>
                     </div>
                     <p></P>
                     <div class="form-group">
@@ -152,10 +154,10 @@
                     </form>
                 <%} else {%>
                     <% if (movie.my_rating[0].star != null) { %>
-                    <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating.star%> / 5</p>
+                    <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating[0].star%> / 10</p>
                     <%}%>
-                    <% if (movie.my_rating[0].comments != null) { %>
-                    <p><label class="control-label col-sm-2">Comments: </label><%= movie.my_rating.comments%></p>
+                    <% if (movie.my_rating[0].comment != null) { %>
+                    <p><label class="control-label col-sm-2">Comment: </label><%= movie.my_rating[0].comment%></p>
                     <%}%>
                 <%}%>
             </div>
