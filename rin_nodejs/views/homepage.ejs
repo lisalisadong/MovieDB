@@ -69,8 +69,29 @@
 	</div>
     <div class="col-sm-offset-1">
 	<% if (results != null) { %>
+		<%if (results.length == 4 && results[3].length > 0) {%>
+		<div class = "col-md-12">
+       		<h4>Recommended For You: </h4>
+       	</div>
+       	<% var row_num = results[3].length / 5; %>
+       		<% for(var r=0; r<row_num; r++) { %>
+       		<div class="row">
+	       		<% for(var j=r * 5; j<(r+1) * 5 && j < results[3].length; j++) { %>
+		       	<div class="col-md-2">
+		       		<img src="<%= results[3][j].poster %>" width="100%" height="100%">
+					<a href="/movie/<%=results[3][j].id%>" onclick="" class="" height = "20%"><%= results[3][j].name %></a>
+					<% var date = results[3][j].releaseDate %>
+					<% if (date != null) { %>
+						<p><%= date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
+						date.getDate()%></p>
+					<%}%>
+		       	</div>
+		       	<% } %>
+		    </div>
+		    <% } %>
+		<% } %>
 		<% var headers = ["Recent Movie: ", "Coming Soon: ", "Top Rated: "]; %>
-		<% for(var i=0; i<results.length; i++) { %>
+		<% for(var i=0; i<3; i++) { %>
 		<div class = "col-md-12">
        		<h4><%= headers[i] %></h4>
        	</div>
