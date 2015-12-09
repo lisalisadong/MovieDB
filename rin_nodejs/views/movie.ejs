@@ -173,7 +173,7 @@
                 <hr>
                 <div class="row">
                     <div class = "col-md-2 col-sm-offset-1">
-                        <p><%= movie.comments[i].name%></p>
+                        <p><a href = "/profile/<%=movie.comments[i].user_id%>"><%= movie.comments[i].name%></p></a>
                     </div>
                     <div class = "col-md-4">
                         <p>Rated: <%=movie.comments[i].star%></p>
