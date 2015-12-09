@@ -154,6 +154,10 @@ var getComments = function(req, res, movie) {
         if (err) {
             console.log("err when getComments");
         } else {
+            
+            for (var i = 0; i < comments.length; i++) {
+                comments[i].timeCreated = getDay(comments.timeCreated);
+            }
             console.log(comments);
             movie.comments = comments;
             generateMovieReponse(req, res, movie);
