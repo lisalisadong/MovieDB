@@ -4,9 +4,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
 var url = require('url');
-var MongoClient = require('mongodb').MongoClient;
-//var User = require('../app/models/user');
-var ObjectId = require('mongoose').Types.ObjectId;
+
 
 var connection = mysql.createConnection({
     host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
@@ -49,9 +47,9 @@ function getRecommendationForUser(req, res, callback) {
     +"review.movie_id = movie.id WHERE movie.genre IN (SELECT genre FROM movie WHERE id " +  
     "IN (SELECT movie_id FROM marks WHERE user_id = '" + user + "')) ORDER BY review.rating DESC, releaseDate DESC LIMIT 10;" ;
 
-    var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE review.star = 10 ORDER BY releaseDate DESC LIMIT 10;";
-    var recommendedMovie = "SELECT * FROM movie WHERE movie.genre IN (SELECT genre FROM movie WHERE id " +  
-        "IN (SELECT movie_id FROM marks WHERE user_id = '" + user + "')) ORDER BY releaseDate DESC LIMIT 10;" ;
+    // var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE review.star = 10 ORDER BY releaseDate DESC LIMIT 10;";
+    // var recommendedMovie = "SELECT * FROM movie WHERE movie.genre IN (SELECT genre FROM movie WHERE id " +  
+    //     "IN (SELECT movie_id FROM marks WHERE user_id = '" + user + "')) ORDER BY releaseDate DESC LIMIT 10;" ;
 
     var queries = [];
     //console.log(recommendedMovie);
