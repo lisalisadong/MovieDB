@@ -74,12 +74,12 @@
             </div>
             <div class="col-md-8">
                 <h3><%= movie.name %> (<%= movie.releaseDate.substring(0,4) %>)</h3>
-                <p>Director: <a href="/person?id=<%=movie.director.id%>" onclick="" class=""><%= movie.director.name %></a></p>
+                <p>Director: <a href="/person/<%=movie.director.id%>" onclick="" class=""><%= movie.director.name %></a></p>
                 <p>Actors: 
-                    <a href="/person?id=<%=movie.actors[0].id%>" onclick="" class=""><%= movie.actors[0].name %></a>
+                    <a href="/person/<%=movie.actors[0].id%>" onclick="" class=""><%= movie.actors[0].name %></a>
                     <% for (var i = 1; i < movie.actors.length; i++) {%>
                      / 
-                    <a href="/person?id=<%=movie.actors[i].id%>" onclick="" class=""><%= movie.actors[i].name %></a>
+                    <a href="/person/<%=movie.actors[i].id%>" onclick="" class=""><%= movie.actors[i].name %></a>
                     <% } %>
                 </p>
                 <p>Release Date: <%= movie.releaseDate %></p>
