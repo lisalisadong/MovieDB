@@ -38,32 +38,13 @@ var generateProfileResponse = function(req, res, isFriend, friendsID, friendsInf
 	res.render('profile.ejs', {
 		user : req.user,
 		profile_owner : ,
-		friendsInfo : {
-			name: friendsName,
-			avatar: friendsInfo.local.avatar
-		},
-		actorInfo : {
-			name: actorInfo.name,
-			picture: actorInfo.picture
-		},
-		directorInfo : {
-			name: directorInfo.name,
-			picture: directorInfo.picture
-		},
-		watchedMoviesInfo: {
-			name: watchedMoviesInfo.name,
-			poster: watchedMoviesInfo.poster
-		},
-		wantedMoviesInfo: {
-			name:wantedMoviesInfo.name,
-			poster: wantedMoviesInfo.poster
-		}
+		
 	});
 }
 
 var getWantedMovies = function(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo, watchedMoviesInfo) {
 	var user = req.user.id;
-	var query = "SELECT * FROM  WHERE movie WHERE id IN (SELECT movie_id FROM marks WHERE "+
+	var query = "SELECT id, name, poster FROM  WHERE movie WHERE id IN (SELECT movie_id FROM marks WHERE "+
 	"status = 2 AND user_id = '" + user + "');"
 	connection.query(query, function(err, wantedMoviesInfo) {
 		if (err) {
@@ -77,7 +58,7 @@ var getWantedMovies = function(req, res, isFriend, friendsID, friendsInfo, actor
 
 var getWatchedMovies = function(req, res, isFriend, friendsID, friendsInfo, actorInfo, directorInfo) {
 	var user = req.user.id;
-	var query = "SELECT * FROM  WHERE movie WHERE id IN (SELECT movie_id FROM marks WHERE "+
+	var query = "SELECT  id, name, poster FROM  WHERE movie WHERE id IN (SELECT movie_id FROM marks WHERE "+
 	"status = 1 AND user_id = '" + user + "');"
 	connection.query(query, function(err, watchedMoviesInfo) {
 		if (err) {
@@ -90,7 +71,7 @@ var getWatchedMovies = function(req, res, isFriend, friendsID, friendsInfo, acto
 
 var getLikedDirectors = function(req, res, isFriend, friendsID, friendsInfo, actorInfo) {
 	var user = req.user.id;
-	var query = "SELECT * FROM director WHERE id IN (SELECT director_id FROM likes_director WHERE "
+	var query = "SELECT id, name, picture FROM director WHERE id IN (SELECT director_id FROM likes_director WHERE "
 		+ "user_id = '" + user + "');";
 	connection.query(query, function(err, directorInfo) {
 		if (err) {
@@ -103,7 +84,7 @@ var getLikedDirectors = function(req, res, isFriend, friendsID, friendsInfo, act
 
 var getLikedActors = function(req, res, isFriend, friendsID, friendsInfo); {
 	var user = req.user.id;
-	var query = "SELECT * FROM actor WHERE id IN (SELECT actor_id FROM likes_actor WHERE "
+	var query = "SELECT id, name, picture FROM actor WHERE id IN (SELECT actor_id FROM likes_actor WHERE "
 		+ "user_id = '" + user + "');";
 	connection.query(query, function(err, actorInfo) {
 		if (err) {
@@ -117,12 +98,14 @@ var getLikedActors = function(req, res, isFriend, friendsID, friendsInfo); {
 
 var getFriendInfo = function(req, res, db, friendsID, callback) {
 	var users = 'users';
-	var cursor = db.connection(users).find({_id.old:friendsID});
+	var cursor = db.connection(users).find({"_id.old":friendsID});
 	console.log(cursor);
 	var friendsInfo = [];
 	cursor.each(function(err, doc) {
 		if (doc != null) {
-			friendsInfo.push(doc);
+			var friend = {
+				
+			}
 		} else {
 			callback(friendsInfo);
 		}
@@ -144,10 +127,11 @@ var getFriendInfoResponse = function(req, res, isFriend, friendsID) {
 	});
 };
 
+
 var getFriend = function(req, res, isFriend) {
 	var owner = req.profile_id;
-	var query = "(SELECT user_id2 FROM friendWith WHERE user_id1 = '"
-	+ user + "') UNION (SELECT user_id1 FROM friendWith WHERE user_id2 = '" + user + "') LIMIT 10; ";
+	var query = "SELECT user_id2 FROM friendWith WHERE user_id1 = '"
+	+ user + "'LIMIT 10; ";
 	console.log(query);
 	connection.query(query, function(err, friendsID) {
 		if (err) {
@@ -158,16 +142,26 @@ var getFriend = function(req, res, isFriend) {
 	});
 };
 
+var getOwner = function(req, res, isFriend) {
+	MongoClient.connect(url, function(err, db) {
+		if (err) {
+			console.log("connect to mongodb fail");
+			db.close();
+		} else {
+			console.log("connect to mongodb success");
+		}
+	})
+}
+
 var isFriend = function(req, res) {
 	var user = req.user.id;
-	var owner = req.profile_id;
+	var owner = req.profile_id;																			
 	if (user == owner) {
 		var isFriend = true;
 		getFirend(req, res, isFriend);
 	} else {
 		var query = "(SELECT * FROM friendWith WHERE user_id1 = '"+ user + "' AND user_id2 = '"
-		+ owner +"') UNION (SELECT * FROM friendWith WHERE user_id1 = '"+ owner + "' AND user_id2 = '"
-		+ user +"');";
+		+ owner +"');";
 		console.log(query);
 		console.query(query, function(err, friendResult) {
 			if (err) {

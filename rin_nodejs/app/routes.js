@@ -51,15 +51,17 @@ module.exports = function(app, passport) {
         res.render('index.ejs');
     });
 
-    app.get('/movie/:id/addRating', function(req,res) {
+
+
+    app.post('/movie/:id/addRating', function(req,res) {
+        console.log("get post");
+        console.log(req.body);
+        console.log(req.params.id);
         movie.insertRatingResponse(req, res);
     });
 
     // movie page
-    app.get('/movie', function(req, res, next) {
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;
-        req.movie_id = query.id;
+    app.get('/movie/:id', function(req, res, next) {
         //TODO: do something here with query.id to fetch movie detail
         // var movie = {   id:27205, 
         //                 name:'Inception', 
@@ -86,34 +88,20 @@ module.exports = function(app, passport) {
     });
     
     // person page
-    app.get('/person', function(req, res, next) {
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;
-        //TODO: do something here with query.id to fetch movie detail
-        req.person_id = query.id;
+    app.get('/person/:id', function(req, res, next) {
+        console.log(req.params);
         person.getPersonInfoResponse(req, res);
     });
 
     // PROFILE SECTION =========================
-    app.get('/profile', isLoggedIn, function(req, res) {
+    app.get('/profile/:id', isLoggedIn, function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         //console.log(query);
         req.profile_id = query.id;
         //TODO: do something with query.id to fetch profile owner data
-        var profile_owner = {   id: '5663e4cb3d868a750e2c02e8',
-                                name: 'Yilun Fu',
-                                avatar: 'https://scontent.xx.fbcdn.net/hprofile-xfa1/v/t1.0-1/c0.90.720.540/p720x720/11149417_1720935731466512_5533335233655428142_n.jpg?oh=eab511501f033eba1790c65cf16ad621&oe=56F0861D',
-                                is_me: false,
-                                is_friend: false,
-                                friends: [{id: '1234', name: 'Ma', avatar: 'https://scontent.xx.fbcdn.net/hprofile-xfa1/v/t1.0-1/c0.90.720.540/p720x720/11149417_1720935731466512_5533335233655428142_n.jpg?oh=eab511501f033eba1790c65cf16ad621&oe=56F0861D'}],
-                                actors: [],
-                                directors: [],
-                                watched_movies: [],
-                                wanted_movies: []
-                            }
         res.render('profile.ejs', {
-            user : req.user, profile_owner : profile_owner
+            user : req.user, profile_owner : null
         });
     });
 

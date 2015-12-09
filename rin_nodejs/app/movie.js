@@ -47,15 +47,33 @@ var getDay = function(date) {
 var insertMark = function(req, res) {
 	var user = req.user.id;
 	var movie = req.movie_id;
+	console.log(req);
+	switch(req.query.status) {
+		case "status1":
+			var mark = 0;
+		case "status2":
+			var mark = 1;
+			break;
+	}
+	var query = "INSERT INTO marks (user_id, movie_id, status) VALUES ('"+user+"','"+movie+"','"+mark+"');";
+	req.movie_id = movie;
+	connection.query(query, function(err,req,res) {
+		if (err) {
+			console.log("err when insertMark");
+		} else {
+			getMovieInfo(req, res);
+		}
+	});
 
 }
 
 
 var insertRating = function(req, res) {
-	console.log(req);
+	console.log(req.body == null);
 	var user = req.user.id;
-	var movie= req.params._id;
+	var movie= req.params.id;
 	console.log(movie);
+	console.log(req);
 	var rating = 0;
 	switch(req.query.rating) {
 		case "option1":
@@ -75,13 +93,14 @@ var insertRating = function(req, res) {
 		+user+"','"+movie+"','"+rating+"','"+comment+"');";
 	console.log(query);
 	req.movie_id = movie;
-	connection.query(query, function(err) {
+	connection.query(query, function(err, req, res) {
 		if (err) {
-			console.log('err when insertRating');
+			console.log(err);
 		} else {
 			getMovieInfo(req, res);
 		}
 	});
+
 
 }
 
@@ -108,13 +127,13 @@ var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsIn
 }
 
 var getComments = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark) {
-    var id = req.movie_id;
+    var id = req.params.id;
     comments = null;
     generateMovieReponse(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark, comments)
 }
 
 var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating) {
-    var id = req.movie_id;
+    var id = req.params.id;
     if (req.user == null) {
     	var myMark = null;
     	getComments(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark);
@@ -123,7 +142,7 @@ var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating,
     var user = req.user.id;
     var query = "SELECT status FROM marks WHERE user_id = '"+user+"' AND movie_id = '"+
     id+"';";
-    console.log(query);
+    //console.log(query);
     connection.query(query, function(err, myMark) {
         if (err) {
             console.log('err when getMyMark');
@@ -134,7 +153,7 @@ var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating,
 }
 
 var getMyRating = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters) {
-    var id = req.movie_id;
+    var id = req.params.id;
     if (req.user == null) {
     	var myRating = null;
     	getMyMark(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating);
@@ -143,8 +162,8 @@ var getMyRating = function(req, res, movieInfo, actorsInfo, directorsInfo, ratin
     var user = req.user.id;
     var query = "SELECT star, comment FROM review WHERE movie_id = '" + id + "' AND user_id = '"
     + user + "';";
-    console.log(query);
-    console.log(raters);
+    //console.log(query);
+    //console.log(raters);
     connection.query(query, function(err, myRating) {
         if (err) {
             console.log('err when getMyRating');
@@ -155,7 +174,7 @@ var getMyRating = function(req, res, movieInfo, actorsInfo, directorsInfo, ratin
 };
 
 var getRatingAndRator = function(req, res, movieInfo, actorsInfo, directorsInfo) {
-    var id = req.movie_id;
+    var id = req.params.id;
     var query = "SELECT AVG(star) AS rating, COUNT(star) AS raters FROM review GROUP BY movie_id HAVING "+
     "movie_id = '" + id + "';";
     console.log(query);
@@ -163,8 +182,12 @@ var getRatingAndRator = function(req, res, movieInfo, actorsInfo, directorsInfo)
         if (err) {
             console.log('err when getRatingAndRator');
         } else {
-            rating = ratingAndRator[0].rating;
-            raters = ratingAndRator[0].raters;
+        	if (ratingAndRator == null) {
+        		getMyRating(req, res, movieInfo, actorsInfo, directorsInfo, 8, 2);
+        		return;
+        	}
+            var rating = ratingAndRator[0].rating;
+            var raters = ratingAndRator[0].raters;
             console.log(rating);
             console.log(raters);
             getMyRating(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters);
@@ -174,10 +197,10 @@ var getRatingAndRator = function(req, res, movieInfo, actorsInfo, directorsInfo)
 
 
 var getMovieDirectors = function(req, res, movieInfo, actorsInfo) {
-    var id = req.movie_id;
+    var id = req.params.id;
     var query = "SELECT director.id, director.name FROM director WHERE director.id IN (SELECT "+
         "director_id FROM directs WHERE movie_id = '"+ id + "') LIMIT 1;";
-    console.log(query);
+    //console.log(query);
     connection.query(query, function(err, directorsInfo) {
         if (err) {
             console.log('err when getMovieDirectors');
@@ -188,10 +211,10 @@ var getMovieDirectors = function(req, res, movieInfo, actorsInfo) {
 }
 
 var getMovieActors = function(req, res, movieInfo) {
-    var id = req.movie_id;
+    var id = req.params.id;
     var query = "SELECT actor.id, actor.name FROM actor WHERE actor.id IN (SELECT "+
         "actor_id FROM plays WHERE movie_id = '"+ id + "') LIMIT 10;";
-    console.log(query);
+    //console.log(query);
     connection.query(query, function(err, actorsInfo) {
         if (err) {
             console.log('err when getMovieActors');
@@ -202,10 +225,10 @@ var getMovieActors = function(req, res, movieInfo) {
 };
 
 var getMovieInfo = function(req, res) {
-    var id = req.movie_id;
+    var id = req.params.id;
     console.log(id);
     var query = "SELECT * FROM movie WHERE id = '" + id + "';";
-    console.log(query);
+    //console.log(query);
     connection.query(query, function(err, movieInfo) {
         if(err) {
             console.log('err when getMovieInfo');
@@ -220,5 +243,6 @@ exports.getMovieInfoResponse = function(req, res) {
 }
 
 exports.insertRatingResponse = function(req, res) {
+	console.log(req.body);
 	insertRating(req, res);
 }

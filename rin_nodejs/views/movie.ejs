@@ -123,6 +123,7 @@
             <div class='col-md-11 col-sm-offset-1'>
                 <h4>My Rating: </h4>
                 <% if (movie.my_rating.length == 0) { %>
+                <form action='/movie/<%=movie.id%>/addRating/' method='post'>
                     <div class="form-group">
                         <label class="radio-inline">
                             <input type="radio" name="rating" id="inlineRadio1" value="option1"> 1
@@ -142,12 +143,13 @@
                     </div>
                     <p></P>
                     <div class="form-group">
-                        <textarea class="form-control" rows="3" placeholder="Comments"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Comments" name="comments"></textarea>
                     </div>
                     <p></P>
                     <div class="form-group">
                         <button type="submit" class="btn btn-danger">Submit</button>
                     </div>
+                    </form>
                 <%} else {%>
                     <% if (movie.my_rating.star != null) { %>
                     <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating.star%> / 5</p>
