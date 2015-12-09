@@ -76,6 +76,7 @@ var insertRating = function(req, res) {
 	console.log(req.body == null);
 	var user = req.user.id;
 	var movie= req.params.id;
+    var name = req.user.local.username == null ? req.user.facebook.name : req.user.local.username;
 	console.log(movie);
 	console.log(req);
 	var rating = 0;
@@ -98,8 +99,8 @@ var insertRating = function(req, res) {
 	}
 	var comment = req.body.comment;
     console.log(comment);
-	var query = "INSERT INTO review (user_id, movie_id, star, comment) VALUES ('"
-		+user+"','"+movie+"','"+rating+"','"+comment+"');";
+	var query = "INSERT INTO review (user_id, movie_id, star, comment, name) VALUES ('"
+		+user+"','"+movie+"','"+rating+"','"+comment+"','"+name+"');";
 	console.log(query);
 	//req.movie_id = movie;
 	connection.query(query, function(err) {
@@ -156,7 +157,7 @@ var getComments = function(req, res, movie) {
         } else {
             
             for (var i = 0; i < comments.length; i++) {
-                comments[i].timeCreated = getDay(comments.timeCreated);
+                comments[i].timeCreated = getDay(comments[i].timeCreated);
             }
             console.log(comments);
             movie.comments = comments;
@@ -261,7 +262,7 @@ var getMovieActors = function(req, res, movie) {
 
 var getMovieInfo = function(req, res) {
     var id = req.params.id;
-    console.log(id);
+    //console.log(req.user);
     var query = "SELECT * FROM movie WHERE id = '" + id + "';";
     //console.log(query);
     connection.query(query, function(err, movieInfo) {
