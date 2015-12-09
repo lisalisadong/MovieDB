@@ -107,6 +107,17 @@ module.exports = function(app, passport) {
         //console.log(query);
         req.profile_id = query.id;
         //TODO: do something with query.id to fetch profile owner data
+        // profile_owner = {
+        //     id:'123',
+        //     name: 'name',
+        //     avatar: 'http:..',
+        //     is_me: 'true/false',
+        //     is_friend: 'true/false',
+        //     actors: [{id:123, name:'aaa', poster:'http://'}, {...}],
+        //     direcors: [{id:123, name:'aaa', poster:'http://'}, {...}],
+        //     wanted_movies: [{id:123, name:'aaa', poster:'http://'}, {...}],
+        //     watched_movies: [{id:123, name:'aaa', poster:'http://'}, {...}]
+        // }
         res.render('profile.ejs', {
             user : req.user, profile_owner : null
         });
