@@ -80,7 +80,7 @@
 	       		<% for(var j=r * 5; j<(r+1) * 5 && j < results[i].length; j++) { %>
 		       	<div class="col-md-2">
 		       		<img src="<%= results[i][j].poster %>" width="100%" height="100%">
-					<a href="/movie?id=<%=results[i][j].id%>" onclick="" class="" height = "20%"><%= results[i][j].name %></a>
+					<a href="/movie/<%=results[i][j].id%>" onclick="" class="" height = "20%"><%= results[i][j].name %></a>
 					<% var date = results[i][j].releaseDate %>
 					<% if (date != null) { %>
 						<p><%= date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
