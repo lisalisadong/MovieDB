@@ -122,7 +122,7 @@ var generateMovieReponse = function(req, res, movie) {
 var getComments = function(req, res, movie) {
     var id = req.params.id;
     var query = "SELECT * FROM ";
-
+    movie.comments = {};
     generateMovieReponse(req, res, movie);
 }
 

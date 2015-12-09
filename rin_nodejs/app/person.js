@@ -37,7 +37,7 @@ var addLikeDirector = function(req, res) {
 	var id = req.user.id;
 	var personId = req.params.id;
 	var query = "INSERT INTO likes_director (user_id, director_id) VALUES ('"+id+"','"+personId+"');";
-	console.log(query);
+	//console.log(query);
 	connection.query(query, function(err) {
 		if (err) {
 			console.log('err when addLikeDirector');
@@ -110,7 +110,7 @@ var getIsLiked = function(req, res, person) {
 			person.is_liked = false;
 			generateMovieResponse(req, res, person);
 		} else {
-			person.is_liked = true
+			person.is_liked = true;
 			generateMovieResponse(req, res, person);
 		}
 	});
@@ -123,7 +123,7 @@ var getTopMoviesForActor = function(req, res, person) {
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
 	+ "WHERE id IN (SELECT movie_id FROM plays " + "WHERE actor_id = '"+ id 
 	+"') ORDER BY helper.rating DESC LIMIT 5;";
-	console.log(query);
+	//console.log(query);
 	connection.query(query, function(err, topMovies) {
 		if (err) {
 			console.log('err when getTopMovies');
@@ -146,7 +146,7 @@ var getRecentMovieForActor = function(req, res, person) {
 	var id = req.params.id;
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie WHERE id IN (SELECT movie_id FROM plays "+
 	"WHERE actor_id = '"+ id + "') ORDER BY releaseDate DESC LIMIT 5;";
-	console.log(query);
+	//console.log(query);
 	connection.query(query, function(err, recentMovies) {
 		if (err) {
 			console.log('err when getRecentMovie');
@@ -166,7 +166,7 @@ var getTopMoviesForDirector = function(req, res, person) {
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
 	+ "WHERE id IN (SELECT movie_id FROM directs " + "WHERE director_id = '"+ id 
 	+"') ORDER BY helper.rating DESC LIMIT 5;";
-	console.log(query);
+	//console.log(query);
 	connection.query(query, function(err, topMovies) {
 		if (err) {
 			console.log('err when getTopMovies');
@@ -189,7 +189,7 @@ var getRecentMovieForDirector = function(req, res, person) {
 	var id = req.params.id;
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie WHERE id IN (SELECT movie_id FROM directs "+
 	"WHERE director_id = '"+ id + "') ORDER BY releaseDate DESC LIMIT 5;";
-	console.log(query);
+	//console.log(query);
 	connection.query(query, function(err, recentMovies) {
 		if (err) {
 			console.log('err when getRecentMovie');

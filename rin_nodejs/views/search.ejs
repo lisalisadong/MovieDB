@@ -157,12 +157,7 @@
 				<img src="<%= results[i].avatar %>" width="100%" height="100%">
 			</div>
 			<div class="col-md-5">
-				<a href="/profile/<%=results[i].id%>" onclick="" class=""><h3><%= results[i].username %></h3></a>
-				<% var date = results[i].dateCreated %>
-				<% if (date != null) { %>
-					<p><%= 'Date Created: ' + date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + 
-					date.getDate()%></p>
-				<%}%>
+				<a href="/profile/<%=results[i].id%>" onclick="" class=""><h3><%= results[i].name %></h3></a>
 			</div>
 			<%}%>
 		</div>

@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://rinuser:rindatabase@ds061974.mongolab.com:61974/rin';
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var connection = mysql.createConnection({
     host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
@@ -10,6 +12,45 @@ var connection = mysql.createConnection({
     database: 'RinDataBase'
 });
 
+var getSearchUserResults = function(input, option, db, callback) {
+	var users = 'users';
+	var cursor = db.collection(users).find({$or:[{"facebook.name":input},{"local.username":input}]});
+	var results = [];
+	cursor.each(function(err, doc) {
+		if (doc != null) {
+			if (doc.local.username) {
+				var name = doc.local.username;
+			} else {
+				var name = doc.facebook.name;
+			}
+			var user = {
+				id: doc._id,
+				name: name,
+				avatar: doc.local.avatar
+			}
+			results.push(user);
+		} else {
+			callback(results);
+		}
+	})
+}
+
+var searchUser = function(input, option, callback) {
+	MongoClient.connect(url, function(err, db) {
+		if (err) {
+			console.log("connect to mongodb fail");
+			db.close();
+		} else {
+			console.log("connect to mongodb success");
+			getSearchUserResults(input, option, db, function(results) {
+				//console.log(db);
+				console.log(results);
+				db.close();
+				callback(results, option);
+			})
+		}
+	})
+}
 
 function getResults(req, callback) {
 	var input = req.query.input;
@@ -30,7 +71,8 @@ function getResults(req, callback) {
 			break;
 		case "option4":
 			option = 4;
-			var query = "SELECT * FROM user WHERE LCASE(username) LIKE LCASE('%" + input + "%');"
+			searchUser(input, option, callback);
+			return;
 			break;
 	}
 	connection.query(query, function(err, rows) {
