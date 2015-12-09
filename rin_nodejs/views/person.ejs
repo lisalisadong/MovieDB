@@ -76,9 +76,9 @@
                 <h3><%= person.name %></h3>
                 <p>Date Of Birth: <%= person.dob %></p>
                 <%if (true) {%>
-                    <a href="addFavorite" class="btn btn-danger btn-sm">Like</a>
+                    <a href="/person/<%=person.id%>/addFavorite" class="btn btn-danger btn-sm">Like</a>
                 <%} else {%>
-                    <a href="removeFavorite" class="btn btn-danger btn-sm">Undo Like</a>
+                    <p>Liked</p>
                 <%}%>
             </div>
         </div>

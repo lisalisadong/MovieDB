@@ -60,6 +60,8 @@ module.exports = function(app, passport) {
         movie.insertRatingResponse(req, res);
     });
 
+
+
     // movie page
     app.get('/movie/:id', function(req, res, next) {
         //TODO: do something here with query.id to fetch movie detail
@@ -92,6 +94,11 @@ module.exports = function(app, passport) {
         console.log(req.params);
         person.getPersonInfoResponse(req, res);
     });
+
+    app.get('/person/:id/addFavorite', function(req, res, next) {
+        console.log(req.params);
+        person.addLikeReponse(req, res);
+    })
 
     // PROFILE SECTION =========================
     app.get('/profile/:id', isLoggedIn, function(req, res) {

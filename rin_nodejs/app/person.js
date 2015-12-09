@@ -3,6 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
 var url = require('url');
+var routes = require('./routes');
 //var MongoClient = require('mongodb').MongoClient;
 
 //var moment = require('moment')
@@ -31,6 +32,47 @@ var connection = mysql.createConnection({
     password: 'fyl1990617',
     database: 'RinDataBase'
 });
+
+var addLikeDirector = function(req, res) {
+	var id = req.user.id;
+	var personId = req.params.id;
+	var query = "INSERT INTO likes_director (user_id, director_id) VALUES ('"+id+"','"+personId+"');";
+	connection.query(query, function(err) {
+		if (err) {
+			console.log('err when addLikeDirector');
+		} else {
+			res.redirect('/person/'+personId);
+		}
+	});
+}
+
+var addLikeActor = function(req, res) {
+	var id = req.user.id;
+	var personId = req.params.id;
+	var query = "INSERT INTO likes_actor (user_id, actor_id) VALUES ('"+id+"','"+personId+"');";
+	connection.query(query, function(err) {
+		if (err) {
+			console.log('err when addLikeActor');
+		} else {
+			res.redirect('/person/'+personId);
+		}
+	});
+}
+
+var addLike = function(req, res) {
+	var id = req.user.id;
+	var personId = req.params.id;
+	var queryActor = "SELECT * FROM actor WHERE id = '"+ id +"';";
+	connection.query(query, function(err, actorInfo) {
+		if (err) {
+			console.log("err when addLike");
+		} else if (actorInfo.length != 0) {
+			addLikeActor(req, res);
+		} else {
+			addLikeDirector(req, res);
+		}
+	})
+}
 
 var getDay = function(date) {
     var year = date.getFullYear();
@@ -166,4 +208,8 @@ var getPersonInfo = function(req, res) {
 
 exports.getPersonInfoResponse = function(req, res){
 	getPersonInfo(req, res);
+}
+
+exports.addLikeReponse = function(req, res) {
+	addLike(req, res);
 }
