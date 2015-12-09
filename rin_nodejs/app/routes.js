@@ -4,6 +4,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
 var person = require('./person');
+var profile = require('./profile');
 var url = require('url');
 var MongoClient = require('mongodb').MongoClient;
 var homepage = require('./homepage');
@@ -101,12 +102,20 @@ module.exports = function(app, passport) {
         person.addLikeReponse(req, res);
     })
 
+    app.get('/profile/:id/follow', function(req, res) {
+        profile.followFriendResponse(req, res);
+    })
+
+    app.get('/profile/:id/unfollow', function(req, res) {
+        profile.unfollowFriendResponse(req, res);
+    })
+
     // PROFILE SECTION =========================
     app.get('/profile/:id', isLoggedIn, function(req, res) {
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;
-        //console.log(query);
-        req.profile_id = query.id;
+        // var url_parts = url.parse(req.url, true);
+        // var query = url_parts.query;
+        // //console.log(query);
+        // req.profile_id = query.id;
         //TODO: do something with query.id to fetch profile owner data
         // profile_owner = {
         //     id:'123',
@@ -119,9 +128,10 @@ module.exports = function(app, passport) {
         //     wanted_movies: [{id:123, name:'aaa', poster:'http://'}, {...}],
         //     watched_movies: [{id:123, name:'aaa', poster:'http://'}, {...}]
         // }
-        res.render('profile.ejs', {
-            user : req.user, profile_owner : null
-        });
+        // res.render('profile.ejs', {
+        //     user : req.user, profile_owner : null
+        // });
+        profile.getProfileResponse(req, res);
     });
 
     app.get('/account', isLoggedIn, function(req, res) {

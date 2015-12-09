@@ -47,7 +47,7 @@ var addLikeDirector = function(req, res) {
 	});
 }
 
-var addLikeActor = function(req, res) {l
+var addLikeActor = function(req, res) {
 	var id = req.user.id;
 	var personId = req.params.id;
 	var query = "INSERT INTO likes_actor (user_id, actor_id) VALUES ('"+id+"','"+personId+"');";
@@ -86,38 +86,16 @@ var getDay = function(date) {
     return year + '-' + month + '-' + day;
 };
 
-var generateMovieResponse = function(req, res, personInfo, recentMovies, topMovies, isLiked) {
+var generateMovieResponse = function(req, res, person) {
 	
-	for (var i = 0; i < recentMovies.length; i++) {
-		recentMovies[i].releaseDate = getDay(recentMovies[i].releaseDate);
-	}
-	for (var i = 0; i < topMovies.length; i++) {
-		topMovies[i].releaseDate = getDay(topMovies[i].releaseDate);
-	}
-	if (personInfo[0].dateOfBirth) {
-		personInfo[0].dateOfBirth = getDay(personInfo[0].dateOfBirth);
-	} else {
-		personInfo[0].dateOfBirth = "";
-	}
-
-	var person = {
-		id : personInfo[0].id,
-		name : personInfo[0].name,
-		dob : personInfo[0].dateOfBirth,
-		picture : personInfo[0].picture,
-		bio : personInfo[0].bio,
-		recent_movies : recentMovies,
-		top_movies : topMovies,
-		is_liked: isLiked
-	};
-	console.log(person);
+	
 	res.render('person.ejs', {user:req.user, person:person});
 }
 
-var getIsLiked = function(req, res, personInfo, recentMovies, topMovies) {
+var getIsLiked = function(req, res, person) {
 	var id = req.params.id;
 	if (req.user == null) {
-		generateMovieResponse(req, res, personInfo, recentMovies, topMovies, true);
+		generateMovieResponse(req, res, person);
 		return;
 	}
 	var user = req.user.id;
@@ -129,15 +107,17 @@ var getIsLiked = function(req, res, personInfo, recentMovies, topMovies) {
 		if (err) {
 			console.log('err when getIsLike');
 		} else if (isLiked.length == 0) {
-			generateMovieResponse(req, res, personInfo, recentMovies, topMovies, false);
+			person.is_liked = false;
+			generateMovieResponse(req, res, person);
 		} else {
-			generateMovieResponse(req, res, personInfo, recentMovies, topMovies, true);
+			person.is_liked = true
+			generateMovieResponse(req, res, person);
 		}
 	});
 
 }
 
-var getTopMoviesForActor = function(req, res, personInfo, recentMovies) {
+var getTopMoviesForActor = function(req, res, person) {
 	var id = req.params.id;
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie INNER JOIN "
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
@@ -148,13 +128,17 @@ var getTopMoviesForActor = function(req, res, personInfo, recentMovies) {
 		if (err) {
 			console.log('err when getTopMovies');
 		} else {
-			getIsLiked(req, res, personInfo, recentMovies, topMovies);
+			for (var i = 0; i < topMovies.length; i++) {
+				topMovies[i].releaseDate = getDay(topMovies[i].releaseDate);
+			}
+			person.top_movies = topMovies;
+			getIsLiked(req, res, person);
 		}
 	});
 };
 
 
-var getRecentMovieForActor = function(req, res, personInfo) {
+var getRecentMovieForActor = function(req, res, person) {
 	var today = getDay(new Date());
     var p = new Date();
     p.setMonth(p.getMonth() - 3);
@@ -167,12 +151,16 @@ var getRecentMovieForActor = function(req, res, personInfo) {
 		if (err) {
 			console.log('err when getRecentMovie');
 		} else {
-			getTopMoviesForActor(req, res, personInfo, recentMovies);
+			for (var i = 0; i < recentMovies.length; i++) {
+				recentMovies[i].releaseDate = getDay(recentMovies[i].releaseDate);
+			}
+			person.recent_movies = recentMovies;
+			getTopMoviesForActor(req, res, person);
 		}
 	});
 };
 
-var getTopMoviesForDirector = function(req, res, personInfo, recentMovies) {
+var getTopMoviesForDirector = function(req, res, person) {
 	var id = req.params.id;
 	var query = "SELECT DISTINCT id, name, releaseDate, poster FROM movie INNER JOIN "
 	+ "(SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS helper "
@@ -183,13 +171,17 @@ var getTopMoviesForDirector = function(req, res, personInfo, recentMovies) {
 		if (err) {
 			console.log('err when getTopMovies');
 		} else {
-			generateMovieResponse(req, res, personInfo, recentMovies, topMovies);
+			for (var i = 0; i < topMovies.length; i++) {
+				topMovies[i].releaseDate = getDay(topMovies[i].releaseDate);
+			}
+			person.top_movies = topMovies;
+			generateMovieResponse(req, res, person);
 		}
 	});
 };
 
 
-var getRecentMovieForDirector = function(req, res, personInfo) {
+var getRecentMovieForDirector = function(req, res, person) {
 	var today = getDay(new Date());
     var p = new Date();
     p.setMonth(p.getMonth() - 3);
@@ -202,40 +194,72 @@ var getRecentMovieForDirector = function(req, res, personInfo) {
 		if (err) {
 			console.log('err when getRecentMovie');
 		} else {
-			getTopMoviesForDirector(req, res, personInfo, recentMovies);
+			for (var i = 0; i < recentMovies.length; i++) {
+				recentMovies[i].releaseDate = getDay(recentMovies[i].releaseDate);
+			}
+			person.recent_movies = recentMovies;
+			getTopMoviesForDirector(req, res, person);
 		}
 	});
 };
 
 
-
-
-var getPersonInfo = function(req, res) {
+var getPersonInfoForDirector = function(req, res, person) {
 	var id = req.params.id;
-	var queryActor = "SELECT * FROM actor WHERE id = '"+ id +"';";
-	var queryDirector = "SELECT * FROM director WHERE id = '"+ id +"';";
-	console.log(queryActor);
-	connection.query(queryActor, function(err, personInfo) {
+	var query = "SELECT * FROM director WHERE id = '"+ id +"';";
+	connection.query(query, function(err, personInfo) {
 		if (err) {
-			console.log('err when getPersonInfo');
-		} else if (personInfo.length != 0) {
-			console.log(personInfo);
-			getRecentMovieForActor(req, res, personInfo);
+			console.log('err when getPersonInfoForDirector')
 		} else {
-			connection.query(queryDirector, function(err, personInfo) {
-				console.log(queryDirector);
-				if (err) {
-					console.log('err when getPersonInfo');
-				} else {
-					getRecentMovieForDirector(req, res, personInfo);
-				}
-			})
+			if (personInfo[0].dateOfBirth) {
+				personInfo[0].dateOfBirth = getDay(personInfo[0].dateOfBirth);
+			} else {
+				personInfo[0].dateOfBirth = "";
+			}
+			person = {
+				id: personInfo[0].id,
+				name: personInfo[0].name,
+				dob: personInfo[0].dateOfBirth,
+				picture : personInfo[0].picture,
+				bio : personInfo[0].bio
+			}
+			getRecentMovieForDirector(req, res, person);
+		}
+	})
+}
+
+
+
+var getPersonInfoForActor = function(req, res) {
+	var id = req.params.id;
+	var query = "SELECT * FROM actor WHERE id = '"+ id +"';";
+	var person = {};
+	connection.query(query, function(err, personInfo) {
+		if (err) {
+			console.log('err when getPersonInfoForActor');
+		} else if (personInfo.length != 0) {
+			if (personInfo[0].dateOfBirth) {
+				personInfo[0].dateOfBirth = getDay(personInfo[0].dateOfBirth);
+			} else {
+				personInfo[0].dateOfBirth = "";
+			}
+			person = {
+				id: personInfo[0].id,
+				name: personInfo[0].name,
+				dob: personInfo[0].dateOfBirth,
+				picture : personInfo[0].picture,
+				bio : personInfo[0].bio
+			}
+			//console.log(personInfo);
+			getRecentMovieForActor(req, res, person);
+		} else {
+			getPersonInfoForDirector(req, res, person);
 		}
 	});
 }
 
 exports.getPersonInfoResponse = function(req, res){
-	getPersonInfo(req, res);
+	getPersonInfoForActor(req, res);
 }
 
 exports.addLikeReponse = function(req, res) {

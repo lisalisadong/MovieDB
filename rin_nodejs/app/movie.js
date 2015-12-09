@@ -51,6 +51,7 @@ var insertMark = function(req, res) {
 	switch(req.body.status) {
 		case "status1":
 			var mark = 0;
+            break;
 		case "status2":
 			var mark = 1;
 			break;
@@ -78,12 +79,16 @@ var insertRating = function(req, res) {
 	switch(req.body.rating) {
 		case "option1":
 			rating = 2;
+            break;
 		case "option2":
 			rating = 4;
+            break;
 		case "option3":
 			rating = 6;
+            break;
 		case "option4":
 			rating = 8;
+            break;
 		case "option5":
 			rating = 10;
 			break;
@@ -105,40 +110,20 @@ var insertRating = function(req, res) {
 
 }
 
-var generateMovieReponse = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark, comments) {
-	var date = getDay(movieInfo[0].releaseDate);
-    var movie = {
-        id: movieInfo[0].id,
-        name: movieInfo[0].name,
-        duration: movieInfo[0].duration,
-        releaseDate: date,
-        poster: movieInfo[0].poster,
-        overview: movieInfo[0].overview,
-        genre: movieInfo[0].genre,
-        actors: actorsInfo,
-        director: directorsInfo[0],
-        rating: rating,
-        raters: raters,
-        my_rating:myRating,
-        my_mark:myMark,
-        comments:{}
-
-    };
-    console.log(myRating);
+var generateMovieReponse = function(req, res, movie) {
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
 
-var getComments = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark) {
-    var id = req.params.id;
-    comments = null;
-    generateMovieReponse(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark, comments)
+var getComments = function(req, res, movie) {
+    movie.comments = {};
+    generateMovieReponse(req, res, movie);
 }
 
-var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating) {
+var getMyMark = function(req, res, movie) {
     var id = req.params.id;
     if (req.user == null) {
-    	var myMark = null;
-    	getComments(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark);
+    	movie.my_mark = null;
+    	getComments(req, res, movie);
     	return;
     }
     var user = req.user.id;
@@ -149,16 +134,17 @@ var getMyMark = function(req, res, movieInfo, actorsInfo, directorsInfo, rating,
         if (err) {
             console.log('err when getMyMark');
         } else {
-            getComments(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating, myMark);
+            movie.my_mark = myMark;
+            getComments(req, res, movie);
         }
     });
 }
 
-var getMyRating = function(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters) {
+var getMyRating = function(req, res, movie) {
     var id = req.params.id;
     if (req.user == null) {
-    	var myRating = null;
-    	getMyMark(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating);
+    	movie.my_rating = null;
+    	getMyMark(req, res, movie);
     	return;
     }
     var user = req.user.id;
@@ -170,12 +156,13 @@ var getMyRating = function(req, res, movieInfo, actorsInfo, directorsInfo, ratin
         if (err) {
             console.log('err when getMyRating');
         } else {
-            getMyMark(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters, myRating);
+            movie.my_rating = myRating;
+            getMyMark(req, res, movie);
         }
     });
 };
 
-var getRatingAndRator = function(req, res, movieInfo, actorsInfo, directorsInfo) {
+var getRatingAndRator = function(req, res, movie) {
     var id = req.params.id;
     var query = "SELECT AVG(star) AS rating, COUNT(star) AS raters FROM review GROUP BY movie_id HAVING "+
     "movie_id = '" + id + "';";
@@ -185,20 +172,22 @@ var getRatingAndRator = function(req, res, movieInfo, actorsInfo, directorsInfo)
             console.log('err when getRatingAndRator');
         } else {
         	if (ratingAndRator == null) {
-        		getMyRating(req, res, movieInfo, actorsInfo, directorsInfo, 8, 2);
+                movie.rating = 0;
+                movie.raters = 0;
+        		getMyRating(req, res, movie);
         		return;
         	}
             var rating = ratingAndRator[0].rating;
             var raters = ratingAndRator[0].raters;
-            console.log(rating);
-            console.log(raters);
-            getMyRating(req, res, movieInfo, actorsInfo, directorsInfo, rating, raters);
+            movie.rating = rating;
+            movie.raters = raters;
+            getMyRating(req, res, movie);
         }
     });
 };
 
 
-var getMovieDirectors = function(req, res, movieInfo, actorsInfo) {
+var getMovieDirectors = function(req, res, movie) {
     var id = req.params.id;
     var query = "SELECT director.id, director.name FROM director WHERE director.id IN (SELECT "+
         "director_id FROM directs WHERE movie_id = '"+ id + "') LIMIT 1;";
@@ -207,12 +196,13 @@ var getMovieDirectors = function(req, res, movieInfo, actorsInfo) {
         if (err) {
             console.log('err when getMovieDirectors');
         } else {
-            getRatingAndRator(req, res, movieInfo, actorsInfo, directorsInfo);
+            movie.director = directorsInfo[0];
+            getRatingAndRator(req, res, movie);
         }
     });
 }
 
-var getMovieActors = function(req, res, movieInfo) {
+var getMovieActors = function(req, res, movie) {
     var id = req.params.id;
     var query = "SELECT actor.id, actor.name FROM actor WHERE actor.id IN (SELECT "+
         "actor_id FROM plays WHERE movie_id = '"+ id + "') LIMIT 10;";
@@ -221,7 +211,8 @@ var getMovieActors = function(req, res, movieInfo) {
         if (err) {
             console.log('err when getMovieActors');
         } else {
-            getMovieDirectors(req, res, movieInfo, actorsInfo);
+            movie.actors = actorsInfo;
+            getMovieDirectors(req, res, movie);
         }
     });
 };
@@ -235,7 +226,16 @@ var getMovieInfo = function(req, res) {
         if(err) {
             console.log('err when getMovieInfo');
         } else {
-            getMovieActors(req, res, movieInfo);
+            var movie = {
+                id: movieInfo[0].id,
+                name: movieInfo[0].name,
+                duration: movieInfo[0].duration,
+                releaseDate: getDay(movieInfo[0].releaseDate),
+                poster: movieInfo[0].poster,
+                overview: movieInfo[0].overview,
+                genre: movieInfo[0].genre,
+            }
+            getMovieActors(req, res, movie);
         }
     });
 };
