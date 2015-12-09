@@ -75,19 +75,19 @@
             <div class="col-md-8">
                 <h3><%= person.name %></h3>
                 <p>Date Of Birth: <%= person.dob %></p>
-<<<<<<< HEAD
+
                 <%if (user && person.is_liked == false) {%>
                     <a href="/person/<%=person.id%>/addFavorite" class="btn btn-danger btn-sm">Like</a>
                 <%} else if (user) {%>
                     <p>Liked</p>
-=======
+
                 <%if (user != null) {%>
                     <%if (person.isLiked == false) {%>
                         <a href="/person/<%=person.id%>/addFavorite" class="btn btn-danger btn-sm">Like</a>
                     <%} else {%>
                         <p>Liked</p>
                     <%}%>
->>>>>>> 16cdf525e95453949f370c71633b1007eab4322d
+
                 <%}%>
             </div>
         </div>

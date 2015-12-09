@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var User  = require('../app/models/user');
 
 var connection = mysql.createConnection({
     host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
@@ -115,7 +116,7 @@ var generateMovieReponse = function(req, res, movie) {
 }
 
 var getComments = function(req, res, movie) {
-    movie.comments = {};
+    var id = req.params.id;
     generateMovieReponse(req, res, movie);
 }
 
