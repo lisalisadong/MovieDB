@@ -5,7 +5,7 @@ var search = require('./search');
 var url = 'mongodb://rinuser:rindatabase@ds061974.mongolab.com:61974/rin';
 var MongoClient = require('mongodb').MongoClient;
 //var User = require('../app/models/user');
-var ObjectId = require('mongoose').Types.ObjectId
+var ObjectId = require('mongoose').Types.ObjectId;
 
 //var moment = require('moment')
 

@@ -4,6 +4,9 @@ var router = express.Router();
 var mysql = require('mysql');
 var search = require('./search');
 var url = require('url');
+var MongoClient = require('mongodb').MongoClient;
+//var User = require('../app/models/user');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var connection = mysql.createConnection({
     host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',

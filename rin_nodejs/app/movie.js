@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var User  = require('../app/models/user');
+var MongoClient = require('mongodb').MongoClient;
+//var User = require('../app/models/user');
+var ObjectId = require('mongoose').Types.ObjectId;
+var url = 'mongodb://rinuser:rindatabase@ds061974.mongolab.com:61974/rin';
 
 var connection = mysql.createConnection({
     host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
@@ -112,11 +115,14 @@ var insertRating = function(req, res) {
 }
 
 var generateMovieReponse = function(req, res, movie) {
+    console.log(movie.my_mark);
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
 
 var getComments = function(req, res, movie) {
     var id = req.params.id;
+    var query = "SELECT * FROM ";
+
     generateMovieReponse(req, res, movie);
 }
 
@@ -171,17 +177,13 @@ var getRatingAndRator = function(req, res, movie) {
     connection.query(query, function(err, ratingAndRator) {
         if (err) {
             console.log('err when getRatingAndRator');
+        } else if (ratingAndRator.length == 0){
+            movie.rating = 0;
+            movie.raters = 0;
+            getMyRating(req, res, movie);
         } else {
-        	if (ratingAndRator == null) {
-                movie.rating = 0;
-                movie.raters = 0;
-        		getMyRating(req, res, movie);
-        		return;
-        	}
-            var rating = ratingAndRator[0].rating;
-            var raters = ratingAndRator[0].raters;
-            movie.rating = rating;
-            movie.raters = raters;
+            movie.rating = ratingAndRator[0].rating;
+            movie.raters = ratingAndRator[0].raters;
             getMyRating(req, res, movie);
         }
     });
