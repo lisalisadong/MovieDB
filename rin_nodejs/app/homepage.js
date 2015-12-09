@@ -39,11 +39,17 @@ function getRecommendationForUser(req, res, callback) {
     //             "(SELECT movie_id FROM marks WHERE user_id = '" + user + "')) " + "ORDER BY releaseDate DESC LIMIT 10;";
     var recentMovie = "SELECT * FROM movie WHERE releaseDate > '" + past + "' AND releaseDate <= '" + today +"' ORDER BY releaseDate DESC LIMIT 10;";
     var comingMovie = "SELECT * FROM movie WHERE releaseDate > '" + today +"' LIMIT 10;";
+
     var ratedMovie = "SELECT * FROM movie INNER JOIN (SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS review On "
     + "review.movie_id = movie.id WHERE review.rating > 8 ORDER BY releaseDate DESC LIMIT 10;";
     var recommendedMovie = "SELECT * FROM movie INNER JOIN (SELECT AVG(star) AS rating, movie_id FROM review GROUP BY movie_id) AS review ON "
     +"review.movie_id = movie.id WHERE movie.genre IN (SELECT genre FROM movie WHERE id " +  
     "IN (SELECT movie_id FROM marks WHERE user_id = '" + user + "')) ORDER BY review.rating DESC, releaseDate DESC LIMIT 10;" ;
+
+    var ratedMovie = "SELECT * FROM movie INNER JOIN review ON review.movie_id = movie.id WHERE review.star = 10 ORDER BY releaseDate DESC LIMIT 10;";
+    var recommendedMovie = "SELECT * FROM movie WHERE movie.genre IN (SELECT genre FROM movie WHERE id " +  
+        "IN (SELECT movie_id FROM marks WHERE user_id = '" + user + "')) ORDER BY releaseDate DESC LIMIT 10;" ;
+
     var queries = [];
     //console.log(recommendedMovie);
     queries.push(recentMovie);
