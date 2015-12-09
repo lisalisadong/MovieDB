@@ -83,7 +83,7 @@
             </div>
         </div>
         <!--add friend button-->
-        <% if (profile_owner.is_me == false ) { %>
+        <% if (user != null && profile_owner.is_me == false ) { %>
             <% if (profile_owner.is_friend == false) {%>
             <div class="row">
                 <div class="col-md-12">
