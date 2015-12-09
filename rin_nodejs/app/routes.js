@@ -54,11 +54,12 @@ module.exports = function(app, passport) {
 
 
     app.post('/movie/:id/addRating', function(req,res) {
-        console.log("get post");
-        console.log(req.body);
-        console.log(req.params.id);
         movie.insertRatingResponse(req, res);
     });
+
+    app.post('/movie/:id/addMarks', function(req, res) {
+        movie.insertMarkResponse(req, res);
+    })
 
 
 
