@@ -76,7 +76,9 @@
                 <h3><%= movie.name %> (<%= movie.releaseDate.substring(0,4) %>)</h3>
                 <p>Director: <a href="/person/<%=movie.director.id%>" onclick="" class=""><%= movie.director.name %></a></p>
                 <p>Actors: 
+                    <%if (movie.actors.length > 0) {%>
                     <a href="/person/<%=movie.actors[0].id%>" onclick="" class=""><%= movie.actors[0].name %></a>
+                    <%}%>
                     <% for (var i = 1; i < movie.actors.length; i++) {%>
                      / 
                     <a href="/person/<%=movie.actors[i].id%>" onclick="" class=""><%= movie.actors[i].name %></a>
@@ -184,20 +186,6 @@
                     <div class = "col-md-10 col-sm-offset-1">
                         <p><%=movie.comments[i].comments%></p>
                     </div>
-                </div>
-                <div class="row">
-                    <div class = "col-md-3 col-sm-offset-6">
-                        <p><%=movie.comments[i].agrees%> people agreed</p>
-                    </div>
-                    <%if (user && !movie.comments[i].agreed) {%>
-                        <div class = "col-md-2">
-                            <a href="/agree" class="btn btn-link">agree</a>
-                        </div>
-                    <%} else if (user){%>
-                        <div class = "col-md-2">
-                            <a href="/undo" class="btn btn-link">undo agree</a>
-                        </div>
-                    <%}%>
                 </div>
                 <%}%>
             </div>
