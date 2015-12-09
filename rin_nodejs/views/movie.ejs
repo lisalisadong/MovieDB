@@ -182,11 +182,13 @@
                         <p><%=movie.comments[i].timeCreated%></p>
                     </div>
                 </div>
+                <% if (movie.comments[i].comment != null && movie.comments[i].comment != 'undefined') { %>
                 <div class="row">
                     <div class = "col-md-10 col-sm-offset-1">
-                        <p><%=movie.comments[i].comments%></p>
+                        <p><%=movie.comments[i].comment%></p>
                     </div>
                 </div>
+                <%}%>
                 <%}%>
             </div>
         </div>
