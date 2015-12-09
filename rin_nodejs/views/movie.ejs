@@ -171,13 +171,13 @@
                 <hr>
                 <div class="row">
                     <div class = "col-md-2 col-sm-offset-1">
-                        <p><a href="#" onclick="" class=""><%= movie.comments[i].name%></a></p>
+                        <p><%= movie.comments[i].name%></p>
                     </div>
                     <div class = "col-md-4">
-                        <p>Rated: <%=movie.comments[i].rating%></p>
+                        <p>Rated: <%=movie.comments[i].star%></p>
                     </div>
                     <div class = "col-md-4">
-                        <p><%=movie.comments[i].time%></p>
+                        <p><%=movie.comments[i].timeCreated%></p>
                     </div>
                 </div>
                 <div class="row">
@@ -189,11 +189,11 @@
                     <div class = "col-md-3 col-sm-offset-6">
                         <p><%=movie.comments[i].agrees%> people agreed</p>
                     </div>
-                    <%if (!movie.comments[i].agreed) {%>
+                    <%if (user && !movie.comments[i].agreed) {%>
                         <div class = "col-md-2">
                             <a href="/agree" class="btn btn-link">agree</a>
                         </div>
-                    <%} else {%>
+                    <%} else if (user){%>
                         <div class = "col-md-2">
                             <a href="/undo" class="btn btn-link">undo agree</a>
                         </div>

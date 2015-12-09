@@ -69,7 +69,6 @@ var insertMark = function(req, res) {
 			res.redirect('/movie/'+movie);
 		}
 	});
-
 }
 
 
@@ -119,11 +118,55 @@ var generateMovieReponse = function(req, res, movie) {
     res.render('movie.ejs', {user:req.user, movie:movie});
 }
 
+var getCommentsAgreed = function(req, comments, callback) {
+    var id = req.params.id;
+    if (req.user == null) {
+        callback(comments);
+        return;
+    }
+    var user = req.user.id;
+    for (var i = 0; i < comments.length; i++) {
+        if (comments[i].agrees == null) {
+            comments[i].agrees = 0;
+            comments[i].agreed = false;
+        } else {
+            var query = "SELECT * FROM agrees WHERE user_id1 = '"+comments[i] +"' AND user_id2 = '"+
+            user+"' AND movie_id = '"+id+"';";
+            console.log(query);
+            var records = connection.query(query);
+            if (records.length == 0) {
+                comments[i].agreed = false;
+            } else {
+                comments[i].agreed = true;
+            }
+        }
+        
+    }
+    callback(comments);
+}
+
 var getComments = function(req, res, movie) {
     var id = req.params.id;
-    var query = "SELECT * FROM ";
-    movie.comments = {};
-    generateMovieReponse(req, res, movie);
+    var query = "SELECT * FROM review LEFT OUTER JOIN (SELECT COUNT(user_id2) AS agrees, user_id1, movie_id FROM agrees GROUP BY user_id1, movie_id) AS agrees ON "+
+    "agrees.movie_id = review.movie_id WHERE review.movie_id = '"+id+"';"
+    //console.log(query);
+    console.log(query);
+    connection.query(query, function(err, comments) {
+        if (err) {
+            console.log("err when getComments");
+        } else {
+            console.log(comments);
+            getCommentsAgreed(req, comments, function(comments) {
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].agrees == null) {
+                        comments[i].agrees = 0;
+                    }
+                }
+                movie.comments = comments;
+                generateMovieReponse(req, res, movie);
+            });
+        }
+    })
 }
 
 var getMyMark = function(req, res, movie) {
