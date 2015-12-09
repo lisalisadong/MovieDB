@@ -45,11 +45,11 @@ var followFriend = function(req, res) {
 var unfollowFriend = function(req, res) {
 	var user = req.user.id;
 	var owner = req.params.id;
-	var query = "DELETE FROM friendWith WHERE user_id1 = '"+user+"',' AND user_id2 = '"+ owner +"';";
+	var query = "DELETE FROM friendWith WHERE user_id1 = '"+user+"' AND user_id2 = '"+ owner +"';";
 	console.log(query);
 	connection.query(query, function(err) {
 		if (err) {
-			console.local('err when unfollowFriend');
+			console.log('err when unfollowFriend');
 		} else {
 			res.redirect('/profile/'+owner);
 		}
@@ -57,7 +57,7 @@ var unfollowFriend = function(req, res) {
 }
 
 var generateProfile = function(req, res, profile_owner) {
-	console.log(profile_owner);
+	//console.log(profile_owner);
 	res.render('profile.ejs', {user:req.user, profile_owner:profile_owner});
 	
 }
@@ -68,7 +68,7 @@ var getFriendInfo = function(req, res, db, friends, callback) {
 	var users = 'users';
 	//console.log(db);
 	var friendsList = [];
-	var cursor = db.collection(users).find({"_id":friends[0]});
+	var cursor = db.collection(users).find({"_id":{$in:friends}});
 	//console.log(cursor);
 	var friendsInfo = [];
 	cursor.each(function(err, result) {
@@ -101,7 +101,7 @@ var getFriendInfoResponse = function(req, res, profile_owner, friends) {
 			//console.log(db);
 			getFriendInfo(req, res, db, friends, function(friendsInfo) {
 				db.close();
-				console.log(friendsInfo);
+				//console.log(friendsInfo);
 				profile_owner.friends = friendsInfo;
 				generateProfile(req, res, profile_owner);
 			});
@@ -121,7 +121,7 @@ var getFriendID = function(req, res, profile_owner) {
 		} else {
 			var friends = [];
 			for (var i = 0; i < friendsID.length; i++) {
-				friends.push(friendsID.user_id2);
+				friends.push(new ObjectId(friendsID[i].user_id2));
 			}
 			console.log(friends);
 			getFriendInfoResponse(req, res, profile_owner, friends);
