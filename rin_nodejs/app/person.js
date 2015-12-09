@@ -99,8 +99,8 @@ var getIsLiked = function(req, res, person) {
 		return;
 	}
 	var user = req.user.id;
-	var query = "(SELECT user_id FROM likes_actor WHERE user_id = '"+ user+"' AND actor_id = '"+id+"')"+
-	" UNION (SELECT user_id FROM likes_director WHERE user_id = '"+ user+"' AND director_id = '"+id+"');";
+	var query = "(SELECT * FROM likes_actor WHERE user_id = '"+ user+"' AND actor_id = '"+id+"')"+
+	" UNION (SELECT * FROM likes_director WHERE user_id = '"+ user+"' AND director_id = '"+id+"');";
 	console.log(query);
 	connection.query(query, function(err, isLiked) {
 		console.log(isLiked.length);

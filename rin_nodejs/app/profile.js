@@ -260,6 +260,14 @@ var getIsFriend = function(req, res, profile_owner) {
 };
 
 var getIsMe = function(req, res) {
+	if (!req.user) {
+		var profile_owner = {
+			is_me:false,
+			is_friend:false
+		}
+		getLikedActors(req, res, profile_owner);
+		return;
+	}
 	var user = req.user.id;
 	var owner = req.params.id;
 	if (user == owner) {
