@@ -151,10 +151,10 @@
                     </div>
                     </form>
                 <%} else {%>
-                    <% if (movie.my_rating.star != null) { %>
+                    <% if (movie.my_rating[0].star != null) { %>
                     <p><label class="control-label col-sm-2">Rated: </label><%= movie.my_rating.star%> / 5</p>
                     <%}%>
-                    <% if (movie.my_rating.comments != null) { %>
+                    <% if (movie.my_rating[0].comments != null) { %>
                     <p><label class="control-label col-sm-2">Comments: </label><%= movie.my_rating.comments%></p>
                     <%}%>
                 <%}%>
