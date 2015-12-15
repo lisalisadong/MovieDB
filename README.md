@@ -1,4 +1,4 @@
-# [Rin Movie-Lover Network](http://ec2-54-164-223-242.compute-1.amazonaws.com:3000/)
+# [Rin Movie-Lover Social Network](http://ec2-54-164-223-242.compute-1.amazonaws.com:3000/)
 
 > Framework: NodeJS
 
@@ -18,9 +18,14 @@
 - [x] npm start → launch the app listening on port 3000
 
 **Modules:**
-  - [x] homepage module: rendering homepage, recommendation
-  - [x] movie module: retrieving and rendering movie information, commenting and marking movies
-  - [x] person module: retrieving and rendering actor/director information, liking actor/director
-  - [x] profile module: retrieving and rendering user profile (avatar, friends list, liked movies, liked actors/directors), following users
-  - [x] route module: dispatch HTTP requests based on urls
-  - [x] search module: searching movies, actors, directors, and users
+- [x] homepage module (homepage.js, homepage,ejs): rendering homepage, recommendation
+- [x] movie module (movie.js, movie.ejs): retrieving and rendering movie information, commenting and marking movies
+- [x] person module (person.js, person.ejs): retrieving and rendering actor/director information, liking actor/director
+- [x] profile module (profile.js, profile.ejs): retrieving and rendering user profile (avatar, friends list, liked movies, liked actors/directors), following users
+- [x] route module (routes.js): dispatch HTTP requests based on urls
+- [x] search module (search.js, search.ejs): searching movies, actors, directors, and users
+- [x] signup/signin module (passport.js, signup.ejs, login.ejs, connect-local.ejs, account.ejs): signup, signin
+
+**References:**
+- [Facebook login tutorial](https://scotch.io/tutorials/easy-node-authentication-facebook)
+- [Bootstrap](http://getbootstrap.com/)
