@@ -6,7 +6,7 @@ var url = 'mongodb://rinuser:rindatabase@ds061974.mongolab.com:61974/rin';
 var ObjectId = require('mongoose').Types.ObjectId;
 
 var connection = mysql.createConnection({
-    host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
+    host: 'rindatabase.ce6omjmj0rey.us-east-1.rds.amazonaws.com',
     user: 'hanabeast',
     password: 'fyl1990617',
     database: 'RinDataBase'

@@ -7,7 +7,7 @@ var url = require('url');
 
 
 var connection = mysql.createConnection({
-    host: 'rindatabase.c2kwkkeairnp.us-east-1.rds.amazonaws.com',
+    host: 'rindatabase.ce6omjmj0rey.us-east-1.rds.amazonaws.com',
     user: 'hanabeast',
     password: 'fyl1990617',
     database: 'RinDataBase'
