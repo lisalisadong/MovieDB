@@ -1,4 +1,4 @@
-# [Rin Movie-Lover Social Network](http://ec2-54-164-223-242.compute-1.amazonaws.com:3000/)
+# [Rin Movie-Lover Social Network](http://ec2-52-91-175-222.compute-1.amazonaws.com:3000/)
 
 > Framework: NodeJS
 
