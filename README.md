@@ -29,3 +29,5 @@
 **References:**
 - [Facebook login tutorial](https://scotch.io/tutorials/easy-node-authentication-facebook)
 - [Bootstrap](http://getbootstrap.com/)
+
+Screenshots, details and demo are available [here](https://lisalisadong.github.io/).
